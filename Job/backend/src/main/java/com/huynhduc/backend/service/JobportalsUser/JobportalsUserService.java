@@ -4,6 +4,7 @@ import com.huynhduc.backend.entity.JobportalsUser;
 import com.huynhduc.backend.repository.JobportalsRoleRepo;
 import com.huynhduc.backend.repository.JobportalsUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -19,10 +20,9 @@ import java.util.stream.Collectors;
 public class JobportalsUserService implements JobportalsUserInterface {
     @Autowired
     private JobportalsUserRepo userRepo;
+
     @Autowired
-    private JobportalsRoleRepo roleRepo;
-
-
+    @Lazy
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override

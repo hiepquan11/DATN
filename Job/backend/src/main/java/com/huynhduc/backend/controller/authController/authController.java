@@ -23,8 +23,7 @@ public class authController {
 
     @Autowired
     private JobportalsUserService userService;
-    @Autowired
-    private JobportalsUserRepo repo;
+
 
     @PostMapping("/")
     public ResponseEntity<?> register(@Validated @RequestBody RegisterDTO registerDTO){
@@ -38,7 +37,7 @@ public class authController {
         newUser.setEmail(registerDTO.getEmail());
         newUser.setPassword(registerDTO.getPassword());
         newUser.setDateJoined(LocalDateTime.now());
-        repo.save(newUser);
+        userService.register(newUser);
         return ResponseEntity.ok().body(new SuccessResponse<>(
                 200, "Successfully",newUser
         ));
