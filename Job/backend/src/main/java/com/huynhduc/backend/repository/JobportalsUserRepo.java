@@ -1,0 +1,10 @@
+package com.huynhduc.backend.repository;
+
+import com.huynhduc.backend.entity.JobportalsUser;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+@RepositoryRestResource(path = "user")
+public interface JobportalsUserRepo extends JpaRepository<JobportalsUser, Integer> {
+   JobportalsUser findByUsername(String username);
+}
