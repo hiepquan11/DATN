@@ -1,4 +1,4 @@
-package com.huynhduc.backend.Response;
+package com.huynhduc.backend.utils.Response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

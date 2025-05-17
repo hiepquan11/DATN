@@ -19,8 +19,7 @@ public class Endpoint {
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = {
-            "/users/",
-            "/o/token/"  // login
+            "/auth/**"
     };
 
     // ====================== AUTHENTICATED COMMON ENDPOINTS ======================

@@ -1,6 +1,6 @@
 package com.huynhduc.backend.config;
 
-import com.huynhduc.backend.service.JWT.JWTService;
+import com.huynhduc.backend.utils.JWT.JWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

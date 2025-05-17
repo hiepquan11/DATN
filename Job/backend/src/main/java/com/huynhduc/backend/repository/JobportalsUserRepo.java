@@ -7,4 +7,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(path = "user")
 public interface JobportalsUserRepo extends JpaRepository<JobportalsUser, Integer> {
    JobportalsUser findByUsername(String username);
+   boolean existsByUsername(String username);
+   boolean existsByEmail(String email);
 }
