@@ -1,5 +1,6 @@
 package com.huynhduc.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,68 +13,98 @@ public class JobportalsJobpost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private int id;  // chuyển sang Long cho nhất quán với bigint trong DB
 
-    @Column(name = "title")
+    @Column(name = "job_name")
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "job_detail")
     private String description;
 
-    @Column(name = "requirement")
+    @Column(name = "job_requirement", columnDefinition = "longtext")
     private String requirement;
 
-    @Column(name = "benefit")
+    @Column(name = "benefits_enjoyed", columnDefinition = "longtext")
     private String benefit;
 
     @Column(name = "quantity")
     private Integer quantity;
 
-    @Column(name = "gender")
-    private String gender;
+    @Column(name = "gender_required")
+    private Integer gender;
 
-    @Column(name = "experience")
-    private String experience;
+    @Column(name = "experience_id")
+    private Long experienceId;
 
-    @Column(name = "degree")
+    @Column(name = "degree_required")
     private String degree;
-
-    @Column(name = "age")
-    private String age;
 
     @Column(name = "deadline")
     private LocalDateTime deadline;
 
     @Column(name = "created_date")
-    private LocalDateTime created_date;
+    private LocalDateTime createdDate;
 
     @Column(name = "updated_date")
-    private LocalDateTime updated_date;
+    private LocalDateTime updatedDate;
 
     @Column(name = "is_active")
-    private Integer is_active;
+    private Integer isActive;
 
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private JobportalsCompany jobportalsCompany;
+    @Column(name = "is_urgent_job")
+    private Integer isUrgentJob;
 
-    @ManyToOne
-    @JoinColumn(name = "position_id")
-    private JobportalsPosition jobportalsPosition;
+    @Column(name = "address")
+    private String address;
 
-    @ManyToOne
-    @JoinColumn(name = "salary_id")
-    private JobportalsSalary jobportalsSalary;
+    @Column(name = "probationary_period")
+    private String probationaryPeriod;
 
-    @ManyToOne
-    @JoinColumn(name = "working_form_id")
-    private JobportalsWorkingform jobportalsWorkingform;
+    @Column(name = "job_description", columnDefinition = "longtext")
+    private String jobDescription;
+
+    @Column(name = "request_profile", columnDefinition = "longtext")
+    private String requestProfile;
+
+    @Column(name = "contact_person_name")
+    private String contactPersonName;
+
+    @Column(name = "contact_address")
+    private String contactAddress;
+
+    @Column(name = "contact_phone_number")
+    private String contactPhoneNumber;
+
+    @Column(name = "contact_email")
+    private String contactEmail;
 
     @ManyToOne
     @JoinColumn(name = "career_id")
+    @JsonIgnore
     private JobportalsCareer jobportalsCareer;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
+    @JsonIgnore
     private JobportalsCity jobportalsCity;
+
+    @ManyToOne
+    @JoinColumn(name = "position_id")
+    @JsonIgnore
+    private JobportalsPosition jobportalsPosition;
+
+    @ManyToOne
+    @JoinColumn(name = "salary_id")
+    @JsonIgnore
+    private JobportalsSalary jobportalsSalary;
+
+    @ManyToOne
+    @JoinColumn(name = "working_form_id")
+    @JsonIgnore
+    private JobportalsWorkingform jobportalsWorkingform;
+
+    @ManyToOne
+    @JoinColumn(name = "recruiter_id")
+    @JsonIgnore
+    private JobportalsCompany jobportalsCompany;
 }

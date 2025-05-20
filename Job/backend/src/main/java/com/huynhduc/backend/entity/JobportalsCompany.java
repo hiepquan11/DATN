@@ -9,15 +9,15 @@ import java.util.List;
 @Entity
 @Table(name = "jobportals_company")
 public class JobportalsCompany {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @Column(name = "company_name", nullable = false)
     private String companyName;
 
     @Column(name = "field_operation", nullable = false)
-    private String field_operation;
+    private String fieldOperation;
 
     @Column(name = "company_size", nullable = false)
     private String companySize;
@@ -40,7 +40,7 @@ public class JobportalsCompany {
     @Column(name = "company_cover_image")
     private String companyCoverImage;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruiter_id", nullable = false)
     private JobportalsUser recruiterId;
 

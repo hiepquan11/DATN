@@ -1,11 +1,14 @@
 package com.huynhduc.backend.controller.authController;
 
+import com.huynhduc.backend.DTO.AuthDTO;
 import com.huynhduc.backend.DTO.LoginDTO;
 import com.huynhduc.backend.DTO.RegisterDTO;
+import com.huynhduc.backend.utils.Cookie.CookieUtils;
 import com.huynhduc.backend.utils.Response.ErrorResponse;
 import com.huynhduc.backend.utils.Response.SuccessResponse;
 import com.huynhduc.backend.entity.JobportalsUser;
 import com.huynhduc.backend.service.JobportalsUser.JobportalsUserService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,8 +55,13 @@ public class authController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Validated @RequestBody LoginDTO loginDTO){
+    public ResponseEntity<?> login(@Validated @RequestBody LoginDTO loginDTO, HttpServletResponse response){
         try {
+            AuthDTO authDTO = userService.login(loginDTO.getUsername(), loginDTO.getPassword());
+
+            CookieUtils.addCookie(response, "accessToken", authDTO.getAccessToken(), 60 * 15, true, true, "/");
+
+            CookieUtils.addCookie(response, "refreshToken", authDTO.getRefreshToken(), 60 * 60 * 24 * 7, true, true, "/");
 
             return ResponseEntity.ok().body(new SuccessResponse<>(
                     200,
