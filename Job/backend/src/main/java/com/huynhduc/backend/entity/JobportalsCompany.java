@@ -1,5 +1,6 @@
 package com.huynhduc.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,41 +14,45 @@ public class JobportalsCompany {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    // Giữ nguyên đúng tên cột
     @Column(name = "company_name", nullable = false)
-    private String companyName;
+    private String company_name;
 
     @Column(name = "field_operation", nullable = false)
-    private String fieldOperation;
+    private String field_operation;
 
     @Column(name = "company_size", nullable = false)
-    private String companySize;
+    private String company_size;
 
     @Column(name = "phone_number", nullable = false)
-    private String phoneNumber;
+    private String phone_number;
 
     @Column(name = "tax_id_number")
-    private String taxIdNumber;
+    private String tax_id_number;
 
     @Column(name = "company_website_url")
-    private String websiteUrl;
+    private String company_website_url;
 
     @Column(name = "address", nullable = false)
     private String address;
 
     @Column(name = "company_description")
-    private String companyDescription;
+    private String company_description;
 
     @Column(name = "company_cover_image")
-    private String companyCoverImage;
+    private String company_cover_image;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "recruiter_id", nullable = false)
+    @JsonIgnore
     private JobportalsUser recruiterId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "city_id")
+    @JsonIgnore
     private JobportalsCity cityId;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "companyId")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "companyId")
     private List<JobportalsComment> comment;
 }

@@ -19,7 +19,7 @@ public class JobportalsCareerController {
     @Autowired
     private JobportalsCareerService careerService;
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<?> getAllCareers() {
         try {
             List<JobportalsCareer> careers = careerService.getAllCareers();
@@ -45,7 +45,7 @@ public class JobportalsCareerController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<?> createCareer(@Validated @RequestBody JobportalsCareer career) {
         try {
             JobportalsCareer savedCareer = careerService.saveCareer(career);

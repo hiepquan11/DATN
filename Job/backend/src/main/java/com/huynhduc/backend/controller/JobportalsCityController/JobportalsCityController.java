@@ -19,7 +19,7 @@ public class JobportalsCityController {
     @Autowired
     private JobportalsCityService cityService;
 
-    @GetMapping("")
+    @GetMapping("/")
     public ResponseEntity<?> getAllCities() {
         try {
             List<JobportalsCity> cities = cityService.getAllCities();
@@ -45,7 +45,7 @@ public class JobportalsCityController {
         }
     }
 
-    @PostMapping("")
+    @PostMapping("/")
     public ResponseEntity<?> createCity(@RequestBody JobportalsCity city) {
         try {
             JobportalsCity savedCity = cityService.saveCity(city);

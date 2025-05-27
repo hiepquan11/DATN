@@ -13,5 +13,5 @@ public class JobportalsCity {
     private int id;
 
     @Column(name = "city_name", nullable = false)
-    private String cityName;
+    private String city_name;
 }

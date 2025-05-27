@@ -10,101 +10,97 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "jobportals_jobpost")
 public class JobportalsJobpost {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;  // chuyển sang Long cho nhất quán với bigint trong DB
+    private int id;
 
     @Column(name = "job_name")
-    private String title;
+    private String job_name;
 
     @Column(name = "job_detail")
-    private String description;
+    private String job_detail;
 
     @Column(name = "job_requirement", columnDefinition = "longtext")
-    private String requirement;
+    private String job_requirement;
 
     @Column(name = "benefits_enjoyed", columnDefinition = "longtext")
-    private String benefit;
+    private String benefits_enjoyed;
 
     @Column(name = "quantity")
     private Integer quantity;
 
     @Column(name = "gender_required")
-    private Integer gender;
-
-    @Column(name = "experience_id")
-    private Long experienceId;
+    private Integer gender_required;
 
     @Column(name = "degree_required")
-    private String degree;
+    private String degree_required;
 
     @Column(name = "deadline")
     private LocalDateTime deadline;
 
     @Column(name = "created_date")
-    private LocalDateTime createdDate;
+    private LocalDateTime created_date;
 
     @Column(name = "updated_date")
-    private LocalDateTime updatedDate;
+    private LocalDateTime updated_date;
 
     @Column(name = "is_active")
-    private Integer isActive;
+    private Integer is_active;
 
     @Column(name = "is_urgent_job")
-    private Integer isUrgentJob;
+    private Integer is_urgent_job;
 
     @Column(name = "address")
     private String address;
 
     @Column(name = "probationary_period")
-    private String probationaryPeriod;
+    private String probationary_period;
 
     @Column(name = "job_description", columnDefinition = "longtext")
-    private String jobDescription;
+    private String job_description;
 
     @Column(name = "request_profile", columnDefinition = "longtext")
-    private String requestProfile;
+    private String request_profile;
 
     @Column(name = "contact_person_name")
-    private String contactPersonName;
+    private String contact_person_name;
 
     @Column(name = "contact_address")
-    private String contactAddress;
+    private String contact_address;
 
     @Column(name = "contact_phone_number")
-    private String contactPhoneNumber;
+    private String contact_phone_number;
 
     @Column(name = "contact_email")
-    private String contactEmail;
+    private String contact_email;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "career_id")
-    @JsonIgnore
-    private JobportalsCareer jobportalsCareer;
+    private JobportalsCareer career;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
-    @JsonIgnore
-    private JobportalsCity jobportalsCity;
+    private JobportalsCity city;
 
     @ManyToOne
     @JoinColumn(name = "position_id")
-    @JsonIgnore
-    private JobportalsPosition jobportalsPosition;
+    private JobportalsPosition position;
 
     @ManyToOne
     @JoinColumn(name = "salary_id")
-    @JsonIgnore
-    private JobportalsSalary jobportalsSalary;
+    private JobportalsSalary salary;
 
     @ManyToOne
     @JoinColumn(name = "working_form_id")
-    @JsonIgnore
-    private JobportalsWorkingform jobportalsWorkingform;
+    private JobportalsWorkingform working_form;
 
     @ManyToOne
     @JoinColumn(name = "recruiter_id")
-    @JsonIgnore
-    private JobportalsCompany jobportalsCompany;
+    private JobportalsCompany recruiter;
+
+    @ManyToOne
+    @JoinColumn(name = "experience_id")
+    private JobportalsExperience experience;
 }

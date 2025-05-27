@@ -1,6 +1,7 @@
 package com.huynhduc.backend.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
@@ -11,6 +12,7 @@ public class JobportalsExperience {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank(message = "Tên kinh nghiệm không được để trống")
     @Column(name = "experience_name", nullable = false)
-    private String experienceName;
+    private String experience_name;
 }
