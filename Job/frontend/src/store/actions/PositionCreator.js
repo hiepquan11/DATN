@@ -5,7 +5,7 @@ const getPositions = () => async (dispatch) => {
   try {
     const res = await Api.get(endpoints["positions"]);
 
-    dispatch({ type: Types.GET_POSITIONS, payload: res.data });
+    dispatch({ type: Types.GET_POSITIONS, payload: res.data.data });
   } catch (err) {
     console.error(err);
   }

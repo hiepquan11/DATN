@@ -30,9 +30,9 @@ const CardJobPostMain = () => {
         console.info("query: " + query);
 
         const res = await Api.get(`${endpoints["job-posts"]}?${query}`);
-        const data = await res.data;
+        const data = await res.data.data;
 
-        setJobPosts(data.results);
+        setJobPosts(data.content);
         setPagination({
           count: data.count,
           sizeNumber: Math.ceil(data.count / data.page_size),
@@ -87,7 +87,7 @@ const CardJobPostMain = () => {
           {/* jobposts */}
           {isLoadingJobPosts ? (
             Array.from({ length: pageSize }, (_, i) => i + 1).map((value) => (
-              <CardItemJobPostLoading />
+              <CardItemJobPostLoading key={value} />
             ))
           ) : jobPosts.length === 0 ? (
             <CardSearchNoResult description="Không tìm thấy bản tin tuyển dụng nào!" />
@@ -96,9 +96,9 @@ const CardJobPostMain = () => {
               <CardItemJobPost
                 key={jobPost.id}
                 jobPostId={jobPost.id}
-                avatar={jobPost.recruiter.avatar}
+                avatar={jobPost.recruiter.company_cover_image}
                 jobName={jobPost.job_name}
-                companyName={jobPost.recruiter.company.company_name}
+                companyName={jobPost.recruiter.company_name}
                 cityName={jobPost.city.city_name}
                 salaryName={jobPost.salary.salary_name}
                 deadline={jobPost.deadline}

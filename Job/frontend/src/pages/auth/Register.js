@@ -69,27 +69,36 @@ const Register = () => {
 
     const register = async () => {
       try {
-        const res = await Api.post(endpoints["users"], registerData);
+        const res = await Api.post(endpoints["auth-register"], registerData);
 
-        if (res.status === 201) {
+        if (res.data.statusCode === 201) {
           nav("/login/");
         }
       } catch (err) {
-        if (err.response.status === 400) {
-          let data = err.response.data;
+      if (err.response) {
+        const data = err.response.data;
 
-          if (data.username)
+        if (data.error) {
+          if (data.error.toLowerCase().includes("username")) {
             setError("username", {
               type: "custom",
-              message: data.username.join(", "),
+              message: data.error,
             });
-          if (data.email)
+          } else if (data.error.toLowerCase().includes("email")) {
             setError("email", {
               type: "custom",
-              message: data.email.join(", "),
+              message: data.error,
             });
+          } else {
+            alert(data.error);
+          }
+        } else if (data.message) {
+          alert(data.message);
         }
+      } else {
+        alert("Lỗi không xác định, vui lòng thử lại sau.");
       }
+    }
     };
 
     register();

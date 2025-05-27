@@ -5,7 +5,7 @@ const getWorkingForms = () => async (dispatch) => {
   try {
     const res = await Api.get(endpoints["working-forms"]);
 
-    dispatch({ type: Types.GET_WORKING_FORMS, payload: res.data });
+    dispatch({ type: Types.GET_WORKING_FORMS, payload: res.data.data });
   } catch (err) {
     console.error(err);
   }

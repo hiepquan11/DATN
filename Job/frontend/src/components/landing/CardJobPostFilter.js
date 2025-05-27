@@ -28,24 +28,40 @@ const CardJobPostFilter = ({
   });
   const [page, setPage] = useState(1);
 
+  // Reset page về 1 mỗi khi filter thay đổi
+  useEffect(() => {
+    setPage(1);
+  }, [
+    careerId,
+    cityId,
+    experienceId,
+    salaryId,
+    positionId,
+    workingFormId,
+    isUrgentJob,
+    pageSize,
+  ]);
+
   useEffect(() => {
     const loadFilterJobPosts = async () => {
       setIsLoadingFilterJobPosts(true);
       try {
-        let query = `career_id=${careerId}&city_id=${cityId}&experience_id=${experienceId}&salary_id=${salaryId}&position_id=${positionId}&working_form_id=${workingFormId}&is_urgent_job=${isUrgentJob}&page_size=${pageSize}&page=${page}`;
+        const query = `career_id=${careerId}&city_id=${cityId}&experience_id=${experienceId}&salary_id=${salaryId}&position_id=${positionId}&working_form_id=${workingFormId}&is_urgent_job=${isUrgentJob}&page_size=${pageSize}&page=${page}`;
 
         console.log("query: " + query);
 
         const res = await Api.get(`${endpoints["job-posts"]}?${query}`);
-        const data = await res.data;
+        const data = res.data.data;
 
-        setFilterJobPosts(data.results);
+        setFilterJobPosts(data.content);
         setPagination({
           count: data.count,
           sizeNumber: Math.ceil(data.count / pageSize),
         });
       } catch (err) {
         console.error(err);
+        setFilterJobPosts([]);
+        setPagination({ count: 0, sizeNumber: 0 });
       } finally {
         setIsLoadingFilterJobPosts(false);
       }
@@ -70,7 +86,7 @@ const CardJobPostFilter = ({
 
   return (
     <Box>
-      {title === "" ? null : (
+      {title && (
         <Typography
           component="h4"
           align="center"
@@ -88,10 +104,9 @@ const CardJobPostFilter = ({
 
       <Box>
         <Grid container spacing={2}>
-          {/* Job Posts Filter*/}
           {isLoadingFilterJobPosts ? (
-            Array.from({ length: pageSize }, (_, i) => i + 1).map((value) => (
-              <CardItemJobPostLoading />
+            Array.from({ length: pageSize }).map((_, i) => (
+              <CardItemJobPostLoading key={i} />
             ))
           ) : filterJobPosts.length === 0 ? (
             <CardSearchNoResult description="Không tìm thấy bản tin tuyển dụng nào!" />
@@ -100,9 +115,9 @@ const CardJobPostFilter = ({
               <CardItemJobPost
                 key={filterJobPost.id}
                 jobPostId={filterJobPost.id}
-                avatar={filterJobPost.recruiter.avatar}
+                avatar={filterJobPost.recruiter.company_cover_image}
                 jobName={filterJobPost.job_name}
-                companyName={filterJobPost.recruiter.company.company_name}
+                companyName={filterJobPost.recruiter.company_name}
                 cityName={filterJobPost.city.city_name}
                 salaryName={filterJobPost.salary.salary_name}
                 deadline={filterJobPost.deadline}
@@ -112,14 +127,14 @@ const CardJobPostFilter = ({
           )}
         </Grid>
       </Box>
-      {pagination.sizeNumber >= 2 && (
+
+      {pagination.sizeNumber > 1 && (
         <Box sx={{ pt: 5, pb: 2 }}>
           <Stack>
             <Pagination
               size="large"
               count={pagination.sizeNumber}
               color="primary"
-              // siblingCount={{ xs: 0 }}
               variant="outlined"
               sx={{ margin: "0 auto" }}
               page={page}

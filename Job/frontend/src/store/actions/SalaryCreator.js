@@ -5,7 +5,7 @@ const getSalaries = () => async (dispatch) => {
   try {
     const res = await Api.get(endpoints["salaries"]);
 
-    dispatch({ type: Types.GET_SALARIES, payload: res.data });
+    dispatch({ type: Types.GET_SALARIES, payload: res.data.data });
   } catch (err) {
     console.error(err);
   }

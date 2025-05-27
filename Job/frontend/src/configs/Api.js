@@ -2,9 +2,9 @@ import axios from "axios";
 import cookie from "react-cookies";
 
 export const endpoints = {
-  careers: "/careers",
-  cities: "/cities",
-  experiences: "experiences/",
+  careers: "/careers/",
+  cities: "/cities/",
+  experiences: "/experiences/",
   salaries: "/salaries/",
   positions: "/positions/",
   "working-forms": "/working-forms/",
@@ -70,6 +70,7 @@ export const endpoints = {
   comments: (commentId) => `/comments/${commentId}/`,
   // auth
   "auth-info": "/auth/login",
+  "auth-register": "/auth/register",
   auth: `/o/token/`,
 };
 
