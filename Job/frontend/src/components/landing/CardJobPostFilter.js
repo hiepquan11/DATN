@@ -46,7 +46,7 @@ const CardJobPostFilter = ({
     const loadFilterJobPosts = async () => {
       setIsLoadingFilterJobPosts(true);
       try {
-        const query = `career_id=${careerId}&city_id=${cityId}&experience_id=${experienceId}&salary_id=${salaryId}&position_id=${positionId}&working_form_id=${workingFormId}&is_urgent_job=${isUrgentJob}&page_size=${pageSize}&page=${page}`;
+        const query = `career=${careerId}&city=${cityId}&experience=${experienceId}&salary=${salaryId}&position=${positionId}&working_form=${workingFormId}&is_urgent_job=${isUrgentJob}&page_size=${pageSize}&page=${page}`;
 
         console.log("query: " + query);
 
@@ -56,7 +56,7 @@ const CardJobPostFilter = ({
         setFilterJobPosts(data.content);
         setPagination({
           count: data.count,
-          sizeNumber: Math.ceil(data.count / pageSize),
+          sizeNumber: Math.ceil(data.count / data.page_size),
         });
       } catch (err) {
         console.error(err);
@@ -105,8 +105,8 @@ const CardJobPostFilter = ({
       <Box>
         <Grid container spacing={2}>
           {isLoadingFilterJobPosts ? (
-            Array.from({ length: pageSize }).map((_, i) => (
-              <CardItemJobPostLoading key={i} />
+            Array.from({ length: pageSize }, (_, i) => i + 1).map((value) => (
+              <CardItemJobPostLoading key={value} />
             ))
           ) : filterJobPosts.length === 0 ? (
             <CardSearchNoResult description="Không tìm thấy bản tin tuyển dụng nào!" />

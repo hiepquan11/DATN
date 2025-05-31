@@ -76,6 +76,13 @@ const Login = () => {
           secure: true,
         });
 
+        cookie.save("current_user", JSON.stringify(res.data.data.user), {
+          path: "/",
+          maxAge: 60 * 60 * 24 * 7,
+          httpOnly: false,
+          secure: true,
+        });
+
         dispatch(updateUser(res.data.data.user)); 
 
         nav("/"); 

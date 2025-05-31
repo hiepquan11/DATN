@@ -31,7 +31,7 @@ export default function AccountMenu() {
   const open = Boolean(anchorEl);
   const user = useSelector((state) => state.user);
   const nav = useNavigate();
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -40,78 +40,102 @@ export default function AccountMenu() {
     setAnchorEl(null);
   };
 
-  // logout
   const handleLogout = () => {
     if (cookie.load("access_token")) {
       cookie.remove("access_token");
       cookie.remove("current_user");
-      dispath(logoutUser());
+      dispatch(logoutUser());
       nav("/login/");
     }
   };
 
+  // Danh sách menu cho seeker
   const menuItemSeekers = [
-    <MenuItem onClick={() => nav("/seeker/account/")}>
-      <Avatar src={user.avatar} />
-      {user.username}
-    </MenuItem>,
-    <Divider />,
-    <MenuItem onClick={() => nav("/seeker/general-management/")}>
-      <ListItemIcon>
-        <AppsIcon fontSize="small" />
-      </ListItemIcon>
-      Quản lý chung
-    </MenuItem>,
-    <MenuItem onClick={() => nav("/seeker/seeker-profile/")}>
-      <ListItemIcon>
-        <AccountCircleIcon fontSize="small" />
-      </ListItemIcon>
-      Hoàn thiện hồ sơ
-    </MenuItem>,
-    <MenuItem onClick={() => nav("/seeker/applied-jobs/")}>
-      <ListItemIcon>
-        <FactCheckIcon fontSize="small" />
-      </ListItemIcon>
-      Việc làm đã ứng tuyển
-    </MenuItem>,
-    <MenuItem onClick={() => nav("/seeker/save-jobs/")}>
-      <ListItemIcon>
-        <WorkHistoryIcon fontSize="small" />
-      </ListItemIcon>
-      Việc làm đã lưu
-    </MenuItem>,
+    {
+      key: "account",
+      label: (
+        <>
+          <Avatar src={user.avatar} /> {user.username}
+        </>
+      ),
+      onClick: () => nav("/seeker/account/"),
+    },
+    { key: "divider1", divider: true },
+    {
+      key: "general-management",
+      label: "Quản lý chung",
+      icon: <AppsIcon fontSize="small" />,
+      onClick: () => nav("/seeker/general-management/"),
+    },
+    {
+      key: "complete-profile",
+      label: "Hoàn thiện hồ sơ",
+      icon: <AccountCircleIcon fontSize="small" />,
+      onClick: () => nav("/seeker/seeker-profile/"),
+    },
+    {
+      key: "applied-jobs",
+      label: "Việc làm đã ứng tuyển",
+      icon: <FactCheckIcon fontSize="small" />,
+      onClick: () => nav("/seeker/applied-jobs/"),
+    },
+    {
+      key: "saved-jobs",
+      label: "Việc làm đã lưu",
+      icon: <WorkHistoryIcon fontSize="small" />,
+      onClick: () => nav("/seeker/save-jobs/"),
+    },
   ];
 
+  // Danh sách menu cho recruiter
   const menuItemRecruiters = [
-    <MenuItem onClick={() => nav("/recruiter/account/")}>
-      <Avatar src={user.avatar} /> {user.username}
-    </MenuItem>,
-    <Divider />,
-    <MenuItem onClick={() => nav("/recruiter/general-management/")}>
-      <ListItemIcon>
-        <AppsIcon fontSize="small" />
-      </ListItemIcon>
-      Quản lý chung
-    </MenuItem>,
-    <MenuItem onClick={() => nav("/recruiter/new-post/")}>
-      <ListItemIcon>
-        <NewspaperIcon fontSize="small" />
-      </ListItemIcon>
-      Đăng tin tuyển dụng
-    </MenuItem>,
-    <MenuItem onClick={() => nav("/recruiter/posted/")}>
-      <ListItemIcon>
-        <HistoryIcon fontSize="small" />
-      </ListItemIcon>
-      Tin tuyển dụng đã đăng
-    </MenuItem>,
-    <MenuItem onClick={() => nav("/recruiter/job-post-activity/")}>
-      <ListItemIcon>
-        <PeopleAltIcon fontSize="small" />
-      </ListItemIcon>
-      Ứng viên ứng tuyển
-    </MenuItem>,
+    {
+      key: "account",
+      label: (
+        <>
+          <Avatar src={user.avatar} /> {user.username}
+        </>
+      ),
+      onClick: () => nav("/recruiter/account/"),
+    },
+    { key: "divider1", divider: true },
+    {
+      key: "general-management",
+      label: "Quản lý chung",
+      icon: <AppsIcon fontSize="small" />,
+      onClick: () => nav("/recruiter/general-management/"),
+    },
+    {
+      key: "post-new-job",
+      label: "Đăng tin tuyển dụng",
+      icon: <NewspaperIcon fontSize="small" />,
+      onClick: () => nav("/recruiter/new-post/"),
+    },
+    {
+      key: "posted-jobs",
+      label: "Tin tuyển dụng đã đăng",
+      icon: <HistoryIcon fontSize="small" />,
+      onClick: () => nav("/recruiter/posted/"),
+    },
+    {
+      key: "job-applicants",
+      label: "Ứng viên ứng tuyển",
+      icon: <PeopleAltIcon fontSize="small" />,
+      onClick: () => nav("/recruiter/job-post-activity/"),
+    },
   ];
+
+  const renderMenuItems = (menuItems) =>
+    menuItems.map((item) =>
+      item.divider ? (
+        <Divider key={item.key} />
+      ) : (
+        <MenuItem key={item.key} onClick={item.onClick}>
+          {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
+          {item.label}
+        </MenuItem>
+      )
+    );
 
   return (
     <>
@@ -141,6 +165,7 @@ export default function AccountMenu() {
           </IconButton>
         </Tooltip>
       </Box>
+
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
@@ -176,22 +201,19 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {/* show menu item  */}
-        {checkPermission(user, UserRole.SEEKER) ? (
-          menuItemSeekers.map((menuItemSeeker) => menuItemSeeker)
-        ) : checkPermission(user, UserRole.RECRUITER) ? (
-          menuItemRecruiters.map((menuItemRecruiter) => menuItemRecruiter)
-        ) : (
-          <MenuItem></MenuItem>
-        )}
-        {/* show menu item  */}
+        {checkPermission(user, UserRole.SEEKER)
+          ? renderMenuItems(menuItemSeekers)
+          : checkPermission(user, UserRole.RECRUITER)
+          ? renderMenuItems(menuItemRecruiters)
+          : null}
+
         <MenuItem
           onClick={() =>
             checkPermission(user, UserRole.SEEKER)
               ? nav("/seeker/change-password/")
               : checkPermission(user, UserRole.RECRUITER)
               ? nav("/recruiter/change-password/")
-              : "/node_modules"
+              : null
           }
         >
           <ListItemIcon>

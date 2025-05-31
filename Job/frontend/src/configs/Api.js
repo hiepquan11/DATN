@@ -79,13 +79,18 @@ export default axios.create({
   baseURL: "http://localhost:8080/",
 });
 
-export const authApi = () => {
+export const authApi = (isFormData = false) => {
+  const accessToken = cookie.load("access_token");
+
+  const headers = {
+    ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+    "Content-Type": isFormData
+      ? "multipart/form-data"
+      : "application/json",
+  };
+
   return axios.create({
-    // baseURL: "https://bkhuy.pythonanywhere.com/",
     baseURL: "http://localhost:8080/",
-    headers: {
-      Authorization: `Bearer ${cookie.load("access_token")}`,
-      "Content-Type": "multipart/form-data",
-    },
+    headers: headers,
   });
 };

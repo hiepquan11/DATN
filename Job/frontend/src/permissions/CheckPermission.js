@@ -1,10 +1,8 @@
 const checkPermission = (user, userRole) => {
-  if (user !== null && "groups" in user) {
-    const groups = user.groups;
-
-    for (let i = 0; i < groups.length; i++) {
-      if (groups[i].name === userRole) return true;
-    }
+  if (user !== null && Array.isArray(user.roles)) {
+    return user.roles.some(
+      role => role.roleName.toLowerCase() === userRole.toLowerCase()
+    );
   }
   return false;
 };

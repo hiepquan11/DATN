@@ -1,25 +1,30 @@
-import CloseIcon from "@mui/icons-material/Close";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import ViewComfyIcon from "@mui/icons-material/ViewComfy";
+import React, { Fragment, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
 import {
   AppBar,
+  Toolbar,
   IconButton,
+  Typography,
+  Drawer,
+  Box,
   Tab,
   Tabs,
-  Toolbar,
-  Typography,
 } from "@mui/material";
-import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
-import { Fragment, useState } from "react";
-import { useSelector } from "react-redux";
 
-const useStyles = makeStyles((theme) => ({
+import CloseIcon from "@mui/icons-material/Close";
+import ViewComfyIcon from "@mui/icons-material/ViewComfy";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(() => ({
   customHoverFocus: {
     textDecoration: "inherit",
     color: "inherit",
-    "&:hover, &.Mui-focusVisible": { color: "#1976d2", fontWeight: "bold" },
+    "&:hover, &.Mui-focusVisible": {
+      color: "#1976d2",
+      fontWeight: "bold",
+    },
   },
 }));
 
@@ -36,13 +41,11 @@ const CardCareer = () => {
     ) {
       return;
     }
-
     setOpen(open);
   };
 
-  const list = () => (
+  const renderDrawerContent = () => (
     <Box
-      sx={{ auto: 250 }}
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
@@ -70,10 +73,10 @@ const CardCareer = () => {
           p: 2,
         }}
       >
-        {careers &&
-          careers.length > 0 &&
+        {careers?.length > 0 &&
           careers.map((career) => (
             <Box
+              key={career.id}
               sx={{
                 width: {
                   xs: "100%",
@@ -84,7 +87,6 @@ const CardCareer = () => {
                 },
                 p: 1,
               }}
-              key={career.id}
             >
               <Typography
                 variant="body1"
@@ -102,59 +104,62 @@ const CardCareer = () => {
   );
 
   return (
-    <div>
-      <Fragment key="top">
-        <AppBar
-          position="static"
-          color="inherit"
-          sx={{
-            boxShadow: 0,
-            borderBottom: 1,
-            borderColor: "grey.200",
-            color: "primary.main",
-          }}
-        >
-          <Toolbar variant="dense">
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-              onClick={toggleDrawer(true)}
-            >
-              <ViewComfyIcon />
-            </IconButton>
-            <Tabs variant="scrollable" scrollButtons allowScrollButtonsMobile>
-              {careers &&
-                careers.length > 0 &&
-                careers.map((career) => (
-                  <Tab
-                    label={
-                      <Typography
-                        variant="subtitle2"
-                        sx={{ mx: 2, margin: "auto" }}
-                        key={career.id}
-                        component={Link}
-                        style={{
-                          textDecoration: "inherit",
-                          color: "#1976d2",
-                          textTransform: "capitalize",
-                        }}
-                        to={`/?career_id=${career.id}`}
-                      >
-                        {career.career_name}
-                      </Typography>
-                    }
-                  />
-                ))}
-            </Tabs>
-          </Toolbar>
-        </AppBar>
-        <Drawer anchor="top" open={open} onClose={toggleDrawer(false)}>
-          {list()}
-        </Drawer>
-      </Fragment>
-    </div>
+    <Fragment>
+      <AppBar
+        position="static"
+        color="inherit"
+        sx={{
+          boxShadow: 0,
+          borderBottom: 1,
+          borderColor: "grey.200",
+          color: "primary.main",
+        }}
+      >
+        <Toolbar variant="dense">
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            onClick={toggleDrawer(true)}
+          >
+            <ViewComfyIcon />
+          </IconButton>
+          <Tabs
+            variant="scrollable"
+            scrollButtons
+            allowScrollButtonsMobile
+            value={false} // Không dùng state chọn tab
+          >
+            {careers?.length > 0 &&
+              careers.map((career) => (
+                <Tab
+                  key={career.id}
+                  label={
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ mx: 2, textTransform: "capitalize" }}
+                      component={Link}
+                      to={`/?career_id=${career.id}`}
+                      style={{
+                        textDecoration: "inherit",
+                        color: "#1976d2",
+                      }}
+                    >
+                      {career.career_name}
+                    </Typography>
+                  }
+                />
+              ))}
+          </Tabs>
+        </Toolbar>
+      </AppBar>
+
+      <Drawer anchor="top" open={open} onClose={toggleDrawer(false)}>
+        {renderDrawerContent()}
+      </Drawer>
+    </Fragment>
   );
 };
+
 export default CardCareer;

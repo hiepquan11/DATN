@@ -6,6 +6,8 @@ const initState =
     ? cookie.load("current_user")
     : null;
 
+console.log("UserReducer initState", initState);
+
 const UserReducer = (state = initState, action) => {
   switch (action.type) {
     case Types.USER_LOGIN:
