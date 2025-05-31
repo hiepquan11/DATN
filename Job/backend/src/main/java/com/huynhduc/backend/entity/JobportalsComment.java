@@ -1,5 +1,6 @@
 package com.huynhduc.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -28,9 +29,11 @@ public class JobportalsComment {
 
     @JoinColumn(name = "company_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private JobportalsCompany companyId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private JobportalsUser userId;
 }

@@ -55,25 +55,61 @@ public class JobportalsJobpostService implements JobportalsJobPostInterface {
         Specification<JobportalsJobpost> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            if (filters.containsKey("keyword")) {
-                String keyword = filters.get("keyword");
-                if (keyword != null && !keyword.trim().isEmpty()) {
-                    predicates.add(cb.like(cb.lower(root.get("jobName")), "%" + keyword.toLowerCase() + "%"));
-                }
+            // filter by keyword (job name)
+            String keyword = filters.get("keyword");
+            if (keyword != null && !keyword.trim().isEmpty()) {
+                predicates.add(cb.like(cb.lower(root.get("job_name")), "%" + keyword.trim().toLowerCase() + "%"));
             }
 
-            if (filters.containsKey("city")) {
-                try {
-                    int cityId = Integer.parseInt(filters.get("city"));
-                    predicates.add(cb.equal(root.get("city").get("id"), cityId));
-                } catch (NumberFormatException ignored) {
-                }
+            // filter by city
+            String city = filters.get("city");
+            if (isNumeric(city)) {
+                predicates.add(cb.equal(root.get("city").get("id"), Integer.parseInt(city)));
             }
 
+            // filter by experience
+            String experience = filters.get("experience");
+            if (isNumeric(experience)) {
+                predicates.add(cb.equal(root.get("experience").get("id"), Integer.parseInt(experience)));
+            }
+
+            // filter by salary
+            String salary = filters.get("salary");
+            if (isNumeric(salary)) {
+                predicates.add(cb.equal(root.get("salary").get("id"), Integer.parseInt(salary)));
+            }
+
+            // filter by position
+            String position = filters.get("position");
+            if (isNumeric(position)) {
+                predicates.add(cb.equal(root.get("position").get("id"), Integer.parseInt(position)));
+            }
+
+            // filter by working_form
+            String workingForm = filters.get("working_form");
+            if (isNumeric(workingForm)) {
+                predicates.add(cb.equal(root.get("working_form").get("id"), Integer.parseInt(workingForm)));
+            }
+
+            //filter by career
+            String career = filters.get("career");
+            if (isNumeric(career)) {
+                predicates.add(cb.equal(root.get("career").get("id"), Integer.parseInt(career)));
+            }
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };
 
         return repository.findAll(spec, pageable);
+    }
+
+    private boolean isNumeric(String str) {
+        if (str == null || str.trim().isEmpty()) return false;
+        try {
+            Integer.parseInt(str.trim());
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

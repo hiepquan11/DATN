@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public class JobportalsUser {
     private String avatar;
 
     @Column(name = "date_joined")
-    private LocalDateTime dateJoined;
+    private Date dateJoined;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userId")
     private List<JobportalsComment> listComments;

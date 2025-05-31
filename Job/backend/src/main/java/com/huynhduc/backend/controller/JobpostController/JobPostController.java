@@ -1,4 +1,4 @@
-package com.huynhduc.backend.controller;
+package com.huynhduc.backend.controller.JobpostController;
 
 import com.huynhduc.backend.entity.JobportalsJobpost;
 import com.huynhduc.backend.service.JobportalsJobPost.JobportalsJobPostInterface;
@@ -103,34 +103,64 @@ public class JobPostController {
 
     @GetMapping("/")
     public ResponseEntity<?> getJobPostsWithFilters(
-            @RequestParam(required = false) String job_name,
-            @RequestParam(required = false) String city_name,
+            @RequestParam(required = false) String kw,
+            @RequestParam(required = false) String city_id,
+            @RequestParam(required = false) String working_form_id,
+            @RequestParam(required = false) String position_id,
+            @RequestParam(required = false) String experience_id,
+            @RequestParam(required = false) String salary_id,
+            @RequestParam(required = false) String career_id,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int page_size
     ) {
         try {
             Pageable pageable = PageRequest.of(page, page_size);
-
             Map<String, String> filters = new HashMap<>();
-            if (job_name != null && !job_name.isEmpty()) {
-                filters.put("job_name", job_name);
+
+            if (kw != null && !kw.isBlank()) {
+                filters.put("keyword", kw);
             }
-            if (city_name != null && !city_name.isEmpty()) {
-                filters.put("city_name", city_name);
+
+            if (city_id != null && !city_id.isBlank()) {
+                filters.put("city", city_id);
+            }
+
+            if (working_form_id != null && !working_form_id.isBlank()) {
+                filters.put("working_form", working_form_id);
+            }
+
+            if (position_id != null && !position_id.isBlank()) {
+                filters.put("position", position_id);
+            }
+
+            if (experience_id != null && !experience_id.isBlank()) {
+                filters.put("experience", experience_id);
+            }
+
+            if (salary_id != null && !salary_id.isBlank()) {
+                filters.put("salary", salary_id);
+            }
+
+            if (career_id != null && !career_id.isBlank()) {
+                filters.put("career", career_id);
             }
 
             Page<JobportalsJobpost> result = jobPostService.getJobPostsWithFilters(filters, pageable);
 
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("content", result.getContent());
-            responseData.put("count", result.getTotalElements());
+            responseData.put("page", result.getNumber());
             responseData.put("page_size", result.getSize());
+            responseData.put("total_pages", result.getTotalPages());
+            responseData.put("count", result.getTotalElements());
 
             return ResponseEntity.ok(new SuccessResponse<>(200, "Tìm kiếm bài đăng thành công", responseData));
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ErrorResponse(500, "Không thể tìm kiếm bài đăng", e.getMessage())
-            );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse(500, "Không thể tìm kiếm bài đăng", e.getMessage()));
         }
     }
+
+
 }
