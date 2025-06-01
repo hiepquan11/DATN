@@ -45,13 +45,11 @@ public class JobportalsCompany {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "recruiter_id", nullable = false)
-    @JsonIgnore
-    private JobportalsUser recruiterId;
+    private JobportalsUser recruiter;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "city_id")
-    @JsonIgnore
-    private JobportalsCity cityId;
+    private JobportalsCity city;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "companyId")
     private List<JobportalsComment> comment;

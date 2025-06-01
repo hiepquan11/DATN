@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -15,17 +16,17 @@ public class JobportalsRating {
     private Integer id;
 
     @Column(name = "created_date")
-    private LocalDateTime created_date;
+    private Date created_date;
 
     @Column(name = "updated_date")
-    private LocalDateTime updated_date;
+    private Date updated_date;
 
     @Column(name = "rating")
     private Integer rating;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
-    private JobportalsCompany jobportalsCompany;
+    private JobportalsCompany company;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

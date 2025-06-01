@@ -3,9 +3,12 @@ package com.huynhduc.backend.service.JobportalsCompany;
 import com.huynhduc.backend.entity.JobportalsCompany;
 import com.huynhduc.backend.repository.JobportalsCompanyRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class JobportalsCompanyService implements JobportalsCompanyInterface {
@@ -48,12 +51,11 @@ public class JobportalsCompanyService implements JobportalsCompanyInterface {
         existing.setCompany_description(updatedCompany.getCompany_description());
         existing.setCompany_cover_image(updatedCompany.getCompany_cover_image());
 
-        existing.setRecruiterId(updatedCompany.getRecruiterId());
-        existing.setCityId(updatedCompany.getCityId());
+        existing.setRecruiter(updatedCompany.getRecruiter());
+        existing.setCity(updatedCompany.getCity());
 
         return companyRepo.save(existing);
     }
-
 
     @Override
     public void deleteCompany(int id) {
@@ -62,5 +64,10 @@ public class JobportalsCompanyService implements JobportalsCompanyInterface {
         } else {
             throw new RuntimeException("Không tìm thấy công ty với id: " + id);
         }
+    }
+
+    @Override
+    public Page<JobportalsCompany> getCompaniesWithFilters(Pageable pageable) {
+        return companyRepo.findAll(pageable);
     }
 }
