@@ -37,12 +37,12 @@ const CardSimilarJobPost = ({ careerId, cityId }) => {
         let query = `career_id=${careerId}&city_id=${cityId}&page_size=${pageSize}&page=${page}`;
 
         const res = await Api.get(`${endpoints["job-posts"]}?${query}`);
-        const data = await res.data;
+        const data = await res.data.data;
 
-        setSimilarJobPosts(data.results);
+        setSimilarJobPosts(data.content);
         setPagination({
           count: data.count,
-          sizeNumber: Math.ceil(data.count / pageSize),
+          sizeNumber: Math.ceil(data.count / data.page_size),
         });
       } catch (err) {
         console.error(err);
@@ -136,7 +136,7 @@ const CardSimilarJobPost = ({ careerId, cityId }) => {
                         gutterBottom
                         color="text.secondary"
                       >
-                        {similarJobPost.recruiter.company.company_name}
+                        {similarJobPost.recruiter.company_name}
                       </Typography>
                       <Box>
                         <Chip

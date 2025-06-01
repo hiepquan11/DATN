@@ -1,55 +1,69 @@
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
+import { useState, memo } from "react";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  MenuItem,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Button, Grid, MenuItem, TextField } from "@mui/material";
-import { memo, useState } from "react";
-import { BackdropLoading } from "../components/commons/Loading";
-import { Controller, useForm } from "react-hook-form";
-import { authApi, endpoints } from "../configs/Api";
-import CardCustomeEditor from "../components/commons/CardCustomEditor";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 import SaveIcon from "@mui/icons-material/Save";
 import { useNavigate } from "react-router-dom";
+
+import { authApi, endpoints } from "../configs/Api";
 import { updateUser } from "../store/actions/UserCreator";
+import { BackdropLoading } from "../components/commons/Loading";
+import CardCustomeEditor from "../components/commons/CardCustomEditor";
+
+const schema = Yup.object({
+  companyName: Yup.string()
+    .required("Tên công ty không được để trống")
+    .max(255, "Tên công ty vượt quá độ dài cho phép"),
+  fieldOperation: Yup.string()
+    .required("Lĩnh vực hoạt động không được để trống")
+    .max(255, "Lĩnh vực hoạt động vượt quá độ dài cho phép"),
+  companySize: Yup.string()
+    .required("Quy mô công ty không được để trống")
+    .max(100, "Quy mô công ty vượt quá độ dài cho phép"),
+  phoneNumber: Yup.string()
+    .required("Số điện thoại không được để trống")
+    .max(15, "Số điện thoại vượt quá độ dài cho phép"),
+  taxIdNumber: Yup.string().max(15, "Mã số thuế vượt quá độ dài cho phép"),
+  companyWebsiteUrl: Yup.string().max(
+    255,
+    "Địa chỉ website vượt quá độ dài cho phép"
+  ),
+  address: Yup.string()
+    .required("Địa chỉ công ty không được để trống")
+    .max(255, "Địa chỉ công ty vượt quá độ dài cho phép"),
+  city: Yup.number()
+    .required("Bạn phải chọn tỉnh/thành phố")
+    .typeError("Bạn phải chọn tỉnh/thành phố"),
+});
 
 const RequestRecruiterCompany = () => {
-  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const nav = useNavigate();
-  const [isLoadingSave, setIsLoadingSave] = useState(false);
+  const user = useSelector((state) => state.user);
   const cities = useSelector((state) => state.cities.cities);
   const [companyDescription, setCompanyDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const validationSchema = Yup.object().shape({
-    companyName: Yup.string()
-      .required("Tên công ty không được để trống")
-      .max(255, "Tên công ty vượt quá độ dài cho phép"),
-    fieldOperation: Yup.string()
-      .required("Lĩnh vực hoạt động không được để trống")
-      .max(255, "Lĩnh vực hoạt động vượt quá độ dài cho phép"),
-    companySize: Yup.string()
-      .required("Quy mô công ty không được để trống")
-      .max(100, "Quy mô công ty vượt quá độ dài cho phép"),
-    phoneNumber: Yup.string()
-      .required("Số điện thoại không được để trống")
-      .max(15, "Số điện thoại vượt quá độ dài cho phép"),
-    taxIdNumber: Yup.string().max(15, "Mã số thuế vượt quá độ dài cho phép"),
-    companyWebsiteUrl: Yup.string().max(
-      255,
-      "Địa chỉ website vượt quá độ dài cho phép"
-    ),
-    address: Yup.string()
-      .required("Địa chỉ công ty không được để trống")
-      .max(255, "Địa chỉ công ty vượt quá độ dài cho phép"),
-    city: Yup.number()
-      .required("Bạn phải chọn tỉnh/thành phố")
-      .typeError("Bạn phải chọn tỉnh/thành phố"),
-  });
-
-  const formOptions = {
-    resolver: yupResolver(validationSchema),
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    setError,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
     defaultValues: {
       companyName: "",
       fieldOperation: "",
@@ -60,74 +74,36 @@ const RequestRecruiterCompany = () => {
       address: "",
       city: "",
     },
-  };
+  });
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    control,
-    setError,
-    formState: { errors },
-  } = useForm(formOptions);
+  const onSubmit = async (data) => {
+    setIsLoading(true);
 
-  // submit form
-  const handleSubmitFormCompanyInfo = (data) => {
-    setIsLoadingSave(true);
-    const {
-      companyName,
-      fieldOperation,
-      companySize,
-      phoneNumber,
-      taxIdNumber,
-      companyWebsiteUrl,
-      address,
-      city,
-    } = data;
-
-    var formData = new FormData();
-    formData.append("company_name", companyName);
-    formData.append("field_operation", fieldOperation);
-    formData.append("company_size", companySize);
-    formData.append("phone_number", phoneNumber);
-    formData.append("tax_id_number", taxIdNumber);
-    formData.append("company_website_url", companyWebsiteUrl);
-    formData.append("address", address);
-    formData.append("city", city);
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) =>
+      formData.append(key.replace(/[A-Z]/g, (match) => `_${match.toLowerCase()}`), value)
+    );
     formData.append("company_description", companyDescription);
 
-    const createOrUpdateCompanyInfo = async () => {
-      try {
-        const res = await authApi().post(
-          endpoints["company-info"](user.id),
-          formData
-        );
-        if (res.status === 200 || res.status === 201) {
-          // cap nhat thong tin user
-          dispatch(updateUser());
-          nav("/recruiter/general-management/");
-        }
-      } catch (err) {
-        if (err.response.status === 400) {
-          let errCompanyName = err.response.data.msg;
-
-          if (errCompanyName !== undefined) {
-            setError("companyName", {
-              type: "custom",
-              message: errCompanyName,
-            });
-          }
-        }
-      } finally {
-        setIsLoadingSave(false);
+    try {
+      const res = await authApi().post(endpoints["company-info"](user.id), formData);
+      if (res.status === 200 || res.status === 201) {
+        await dispatch(updateUser());
+        nav("/recruiter/general-management/");
       }
-    };
-
-    createOrUpdateCompanyInfo();
+    } catch (err) {
+      if (err.response?.status === 400 && err.response.data?.msg) {
+        setError("companyName", {
+          type: "manual",
+          message: err.response.data.msg,
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // reset form
-  const handleResetForm = () => {
+  const onReset = () => {
     reset();
     setCompanyDescription("");
   };
@@ -137,216 +113,144 @@ const RequestRecruiterCompany = () => {
       <Container maxWidth="md" sx={{ mb: 4 }}>
         <Paper
           variant="outlined"
-          elevation={12}
-          sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, boxShadow: 2 }}
+          sx={{ mt: 6, p: { xs: 2, md: 4 }, boxShadow: 2 }}
         >
-          <Typography
-            component="h1"
-            variant="h4"
-            align="center"
-            sx={{ mb: 3 }}
-            color="info"
-          >
+          <Typography variant="h4" align="center" sx={{ mb: 3 }} color="info">
             Cập nhật hồ sơ công ty
           </Typography>
-          <form onSubmit={handleSubmit(handleSubmitFormCompanyInfo)}>
-            <Grid container spacing={4}>
-              <Grid item xs={12} md={6} sm={12}>
+
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={6}>
                 <TextField
-                  fullWidth
-                  id="companyName"
-                  name="companyName"
-                  size="small"
-                  type="text"
                   label="Tên công ty (*)"
-                  error={errors.companyName}
-                  helperText={
-                    errors.companyName
-                      ? errors.companyName.message
-                      : "Nhập tên công ty"
-                  }
+                  fullWidth
+                  size="small"
+                  error={!!errors.companyName}
+                  helperText={errors.companyName?.message}
                   {...register("companyName")}
-                  InputLabelProps={{ shrink: true }}
                 />
               </Grid>
-              <Grid item xs={12} md={6} sm={12}>
+
+              <Grid item xs={12} md={6}>
                 <TextField
-                  fullWidth
-                  id="fieldOperation"
-                  name="fieldOperation"
-                  size="small"
-                  type="text"
                   label="Lĩnh vực hoạt động (*)"
-                  error={errors.fieldOperation}
-                  helperText={
-                    errors.fieldOperation
-                      ? errors.fieldOperation.message
-                      : "Nhập tên lĩnh vực hoạt động"
-                  }
+                  fullWidth
+                  size="small"
+                  error={!!errors.fieldOperation}
+                  helperText={errors.fieldOperation?.message}
                   {...register("fieldOperation")}
-                  InputLabelProps={{ shrink: true }}
                 />
               </Grid>
-              <Grid item xs={12} md={4} sm={12}>
+
+              <Grid item xs={12} md={4}>
                 <TextField
-                  fullWidth
-                  id="companySize"
-                  name="companySize"
-                  size="small"
-                  type="text"
                   label="Quy mô công ty (*)"
-                  error={errors.companySize}
-                  helperText={
-                    errors.companySize
-                      ? errors.companySize.message
-                      : "Nhập quy mô công ty. VD: 100-499 nhân viên"
-                  }
+                  fullWidth
+                  size="small"
+                  error={!!errors.companySize}
+                  helperText={errors.companySize?.message}
                   {...register("companySize")}
-                  InputLabelProps={{ shrink: true }}
                 />
               </Grid>
-              <Grid item xs={12} md={4} sm={12}>
+
+              <Grid item xs={12} md={4}>
                 <TextField
-                  fullWidth
-                  id="taxIdNumber"
-                  name="taxIdNumber"
-                  size="small"
-                  type="text"
                   label="Mã số thuế"
-                  error={errors.taxIdNumber}
-                  helperText={
-                    errors.taxIdNumber
-                      ? errors.taxIdNumber.message
-                      : "Nhập mã số thuế"
-                  }
-                  {...register("taxIdNumber")}
-                  InputLabelProps={{ shrink: true }}
-                />
-              </Grid>
-              <Grid item xs={12} md={4} sm={12}>
-                <TextField
                   fullWidth
-                  id="phoneNumber"
-                  name="phoneNumber"
                   size="small"
-                  type="text"
-                  label="Điện thoại cố định (*)"
-                  error={errors.phoneNumber}
-                  helperText={
-                    errors.phoneNumber
-                      ? errors.phoneNumber.message
-                      : "Nhập số điện thoại cố định của công ty"
-                  }
-                  {...register("phoneNumber")}
-                  InputLabelProps={{ shrink: true }}
+                  error={!!errors.taxIdNumber}
+                  helperText={errors.taxIdNumber?.message}
+                  {...register("taxIdNumber")}
                 />
               </Grid>
-              <Grid item xs={12} md={4} sm={12}>
+
+              <Grid item xs={12} md={4}>
+                <TextField
+                  label="Điện thoại cố định (*)"
+                  fullWidth
+                  size="small"
+                  error={!!errors.phoneNumber}
+                  helperText={errors.phoneNumber?.message}
+                  {...register("phoneNumber")}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={4}>
                 <Controller
+                  name="city"
+                  control={control}
                   render={({ field }) => (
                     <TextField
-                      {...field}
-                      id="city"
                       select
-                      size="small"
                       fullWidth
+                      size="small"
                       label="Tỉnh/thành phố (*)"
-                      error={errors.city}
-                      helperText={
-                        errors.city
-                          ? errors.city.message
-                          : "Chọn tỉnh/thành phố"
-                      }
+                      error={!!errors.city}
+                      helperText={errors.city?.message}
+                      {...field}
                     >
                       {cities.map((city) => (
-                        <MenuItem value={city.id} key={city.id}>
+                        <MenuItem key={city.id} value={city.id}>
                           {city.city_name}
                         </MenuItem>
                       ))}
                     </TextField>
                   )}
-                  name="city"
-                  control={control}
                 />
               </Grid>
-              <Grid item xs={12} md={8} sm={12}>
+
+              <Grid item xs={12} md={8}>
                 <TextField
+                  label="Địa chỉ (*)"
                   fullWidth
-                  id="address"
-                  name="address"
                   size="small"
-                  type="text"
-                  label="Địa chỉ(*)"
-                  error={errors.address}
-                  helperText={
-                    errors.address
-                      ? errors.address.message
-                      : "Nhập địa chỉ của công ty"
-                  }
+                  error={!!errors.address}
+                  helperText={errors.address?.message}
                   {...register("address")}
-                  InputLabelProps={{ shrink: true }}
                 />
               </Grid>
-              <Grid item xs={12} md={12} sm={12}>
+
+              <Grid item xs={12}>
                 <TextField
+                  label="Website công ty"
                   fullWidth
-                  id="companyWebsiteUrl"
-                  name="companyWebsiteUrl"
                   size="small"
-                  type="text"
-                  label="Url website công ty"
-                  error={errors.companyWebsiteUrl}
-                  helperText={
-                    errors.companyWebsiteUrl
-                      ? errors.companyWebsiteUrl.message
-                      : "Nhập địa chỉ website công ty"
-                  }
+                  error={!!errors.companyWebsiteUrl}
+                  helperText={errors.companyWebsiteUrl?.message}
                   {...register("companyWebsiteUrl")}
-                  InputLabelProps={{ shrink: true }}
                 />
               </Grid>
-              <Grid item xs={12} md={12} sm={12}>
-                <Typography
-                  variant="body1"
-                  display="block"
-                  gutterBottom
-                  sx={{ color: "text.secondary" }}
-                >
+
+              <Grid item xs={12}>
+                <Typography gutterBottom color="text.secondary">
                   Thông tin giới thiệu công ty
                 </Typography>
                 <CardCustomeEditor
                   value={companyDescription}
-                  handleChange={(value) => setCompanyDescription(value)}
+                  handleChange={setCompanyDescription}
                 />
               </Grid>
 
-              <Grid item xs={12} md={12} sm={12} align="center" my={3}>
-                <span style={{ marginRight: "5px" }}>
-                  <Button
-                    type="submit"
-                    startIcon={<SaveIcon />}
-                    variant="contained"
-                    onClick={handleSubmitFormCompanyInfo}
-                  >
-                    Lưu
-                  </Button>
-                </span>
-                <span style={{ marginLeft: "5px" }}>
-                  <Button
-                    variant="outlined"
-                    size="medium"
-                    type="button"
-                    onClick={handleResetForm}
-                  >
-                    Không Lưu
-                  </Button>
-                </span>
+              <Grid item xs={12} textAlign="center" mt={2}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  startIcon={<SaveIcon />}
+                  sx={{ mr: 2 }}
+                >
+                  Lưu
+                </Button>
+                <Button variant="outlined" onClick={onReset}>
+                  Không lưu
+                </Button>
               </Grid>
             </Grid>
           </form>
         </Paper>
       </Container>
-      {isLoadingSave && <BackdropLoading />}
+
+      {isLoading && <BackdropLoading />}
     </Box>
   );
 };

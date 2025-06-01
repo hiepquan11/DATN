@@ -10,9 +10,9 @@ export const endpoints = {
   "working-forms": "/working-forms/",
   "top-companies": "/top-company/",
   "job-posts": "/job-posts/",
-  "job-post-detail": (jobPostId) => `/job-posts/${jobPostId}/`,
+  "job-post-detail": (jobPostId) => `/job-posts/${jobPostId}`,
   "job-posts-retrieve": (jobPostId) => `/job-posts/${jobPostId}/`,
-  "job-post-view": (jobPostId) => `/job-posts/${jobPostId}/view/`,
+  "job-post-view": (jobPostId) => `/job-posts/${jobPostId}/view`,
   "job-post-recruiter": (jobPostId) => `/job-posts/${jobPostId}/job-post/`,
   "applied-job-post": (jobPostId) =>
     `/job-posts/${jobPostId}/applied-job-post/`,

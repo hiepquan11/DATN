@@ -94,8 +94,10 @@ const PostDetail = () => {
           endpoints["job-post-detail"](jobPostId)
         );
 
-        if (res.status === 200) {
-          setJobPostDetail(res.data);
+        console.log("res: ", res);
+
+        if (res.data.statusCode === 200) {
+          setJobPostDetail(res.data.data);
           setSaved({
             isSaved: res.data.saved.saved,
             saveJobPostId: res.data.saved.id,
@@ -555,6 +557,7 @@ const PostDetail = () => {
   );
 
   console.log("PostDetail: render");
+  console.log("jobPostDetail: ", jobPostDetail);
   return (
     <>
       <section>
@@ -586,7 +589,7 @@ const PostDetail = () => {
                     <ListItem sx={{ p: 0 }}>
                       <ListItemAvatar>
                         <Avatar
-                          src={jobPostDetail.recruiter.avatar}
+                          src={jobPostDetail.recruiter.company_cover_image}
                           sx={{ width: 75, height: 75, mr: 1 }}
                         />
                       </ListItemAvatar>
@@ -601,10 +604,10 @@ const PostDetail = () => {
                               color: "inherit",
                             }}
                           >
-                            {jobPostDetail.recruiter.company.company_name}
+                            {jobPostDetail.recruiter.company_name}
                           </Typography>
                         }
-                        secondary={`${jobPostDetail.recruiter.company.field_operation}`}
+                        secondary={`${jobPostDetail.recruiter.field_operation}`}
                       />
                     </ListItem>
                   </Box>
@@ -794,7 +797,7 @@ const PostDetail = () => {
                               sx={{ fontWeight: "bold" }}
                               gutterBottom
                             >
-                              {jobPostDetail.recruiter.company.field_operation}
+                              {jobPostDetail.recruiter.field_operation}
                             </Typography>
                           </Grid>
                           <Grid item xs={6} sm={6} md={5} lg={6}>
@@ -1097,7 +1100,7 @@ const PostDetail = () => {
                     >
                       Tag
                     </Typography>
-                    <Box>
+                    {/* <Box>
                       {jobPostDetail.tags.length > 0 ? (
                         <Stack direction="row" spacing={1}>
                           {jobPostDetail.tags.map((tag) => (
@@ -1116,7 +1119,7 @@ const PostDetail = () => {
                           Chưa có tag nào được gắn cho tin tuyển dụng này. 😊
                         </Typography>
                       )}
-                    </Box>
+                    </Box> */}
                   </Box>
                 </Box>
               </Grid>

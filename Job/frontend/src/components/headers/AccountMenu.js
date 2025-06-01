@@ -41,13 +41,16 @@ export default function AccountMenu() {
   };
 
   const handleLogout = () => {
-    if (cookie.load("access_token")) {
-      cookie.remove("access_token");
-      cookie.remove("current_user");
-      dispatch(logoutUser());
-      nav("/login/");
-    }
+    
+    cookie.remove("access_token");
+    cookie.remove("current_user");
+    cookie.remove("refresh_token");
+
+    dispatch(logoutUser());
+
+    nav("/login/");
   };
+
 
   // Danh sách menu cho seeker
   const menuItemSeekers = [
