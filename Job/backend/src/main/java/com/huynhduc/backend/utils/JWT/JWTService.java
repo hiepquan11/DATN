@@ -47,7 +47,10 @@ public class JWTService {
         JobportalsUser user = userRepo.findByUsername(username);
         if (user != null && user.getRoles() != null) {
             claims.put("id", user.getId());
-            claims.put("role", user.getRoles().stream().findFirst().get().getRoleName());
+            claims.put("username", user.getUsername());
+            claims.put("roles", user.getRoles().stream()
+                    .map(role -> "ROLE_" + role.getRoleName()) // thêm ROLE_ prefix
+                    .toList());
         }
 
         return Jwts.builder()

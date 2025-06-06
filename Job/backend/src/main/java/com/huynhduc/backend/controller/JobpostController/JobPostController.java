@@ -2,6 +2,7 @@ package com.huynhduc.backend.controller.JobpostController;
 
 import com.huynhduc.backend.entity.JobportalsJobpost;
 import com.huynhduc.backend.service.JobportalsJobPost.JobportalsJobPostInterface;
+import com.huynhduc.backend.service.JobportalsJobPost.JobportalsJobpostService;
 import com.huynhduc.backend.utils.Response.SuccessResponse;
 import com.huynhduc.backend.utils.Response.ErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -21,7 +24,7 @@ import java.util.Map;
 public class JobPostController {
 
     @Autowired
-    private JobportalsJobPostInterface jobPostService;
+    private JobportalsJobpostService jobPostService;
 
     @GetMapping
     public ResponseEntity<?> getAllJobPosts() {
@@ -33,6 +36,17 @@ public class JobPostController {
                     new ErrorResponse(500, "Không thể lấy danh sách bài đăng", e.getMessage())
             );
         }
+    }
+
+    @GetMapping("/{id}/job-posts/")
+    public ResponseEntity<?> getJobPostDetail (@PathVariable int id) {
+        JobportalsJobpost jobPost = jobPostService.getJobPostById(id);
+        if (jobPost == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ErrorResponse(HttpStatus.NOT_FOUND.value(), "Not found",null)
+            );
+        }
+        return ResponseEntity.ok(new SuccessResponse<>(200, "Lấy dữ liệu thành công", jobPost));
     }
 
     @GetMapping("/{id}")
@@ -52,33 +66,34 @@ public class JobPostController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createJobPost(@RequestBody JobportalsJobpost jobPost) {
-        try {
-            JobportalsJobpost created = jobPostService.createJobPost(jobPost);
-            return ResponseEntity.status(HttpStatus.CREATED).body(
-                    new SuccessResponse<>(201, "Tạo bài đăng thành công", created)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ErrorResponse(400, "Không thể tạo bài đăng", e.getMessage())
-            );
-        }
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<?> updateJobPost(@PathVariable int id, @RequestBody JobportalsJobpost jobPost) {
+//        try {
+//            JobportalsJobpost updated = jobPostService.updateJobPost(id, jobPost);
+//            if (updated == null) {
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+//                        new ErrorResponse(404, "Không tìm thấy bài đăng để cập nhật", "ID không tồn tại")
+//                );
+//            }
+//            return ResponseEntity.ok(new SuccessResponse<>(200, "Cập nhật bài đăng thành công", updated));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+//                    new ErrorResponse(400, "Không thể cập nhật bài đăng", e.getMessage())
+//            );
+//        }
+//    }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateJobPost(@PathVariable int id, @RequestBody JobportalsJobpost jobPost) {
+    @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateJobPost(
+            @PathVariable int id,
+            @ModelAttribute JobportalsJobpost jobPost) {
+
         try {
             JobportalsJobpost updated = jobPostService.updateJobPost(id, jobPost);
-            if (updated == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                        new ErrorResponse(404, "Không tìm thấy bài đăng để cập nhật", "ID không tồn tại")
-                );
-            }
-            return ResponseEntity.ok(new SuccessResponse<>(200, "Cập nhật bài đăng thành công", updated));
+            return ResponseEntity.ok(new SuccessResponse<>(200, "Cập nhật thành công", updated));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ErrorResponse(400, "Không thể cập nhật bài đăng", e.getMessage())
+                    new ErrorResponse(400, "Không thể cập nhật", e.getMessage())
             );
         }
     }
@@ -100,6 +115,8 @@ public class JobPostController {
             );
         }
     }
+
+
 
     @GetMapping("/")
     public ResponseEntity<?> getJobPostsWithFilters(

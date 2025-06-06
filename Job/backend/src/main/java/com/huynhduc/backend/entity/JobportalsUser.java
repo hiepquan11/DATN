@@ -28,7 +28,7 @@ public class JobportalsUser {
     private String email;
 
     @Column(name = "last_login")
-    private LocalDateTime lastLogin;
+    private Date lastLogin;
 
     @Column(name = "avatar")
     private String avatar;
@@ -45,7 +45,7 @@ public class JobportalsUser {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "jobportalsUser")
     private List<JobportalsRating> ratingList;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "jobportals_user_groups",
             joinColumns = @JoinColumn(name = "user_id"),

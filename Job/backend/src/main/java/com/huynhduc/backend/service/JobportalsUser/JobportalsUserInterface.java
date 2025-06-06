@@ -7,4 +7,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface JobportalsUserInterface extends UserDetailsService {
      JobportalsUser register(JobportalsUser user, boolean isRecruiter);
      AuthDTO login(String username, String password);
+     JobportalsUser getUserByUsername(String username);
+     JobportalsUser getById(int id);
 }

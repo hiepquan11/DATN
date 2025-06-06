@@ -70,6 +70,16 @@ public class JobportalsUserService implements JobportalsUserInterface {
     }
 
     @Override
+    public JobportalsUser getUserByUsername(String username) {
+        return userRepo.findByUsername(username);
+    }
+
+    @Override
+    public JobportalsUser getById(int id) {
+        return userRepo.findById(id);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         JobportalsUser user = userRepo.findByUsername(username);
         if(user == null){
@@ -84,7 +94,7 @@ public class JobportalsUserService implements JobportalsUserInterface {
 
     private Collection<? extends GrantedAuthority> getAuthorities(JobportalsUser user) {
         return user.getRoles().stream().map(
-                role -> new SimpleGrantedAuthority(role.getRoleName())
+                role -> new SimpleGrantedAuthority("ROLE_" + role.getRoleName())
         ).collect(Collectors.toList());
     }
 }

@@ -3,8 +3,10 @@ package com.huynhduc.backend.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Entity
@@ -38,13 +40,14 @@ public class JobportalsJobpost {
     private String degree_required;
 
     @Column(name = "deadline")
-    private LocalDateTime deadline;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date deadline;
 
     @Column(name = "created_date")
-    private LocalDateTime created_date;
+    private Date created_date;
 
     @Column(name = "updated_date")
-    private LocalDateTime updated_date;
+    private Date updated_date;
 
     @Column(name = "is_active")
     private Integer is_active;
@@ -98,7 +101,7 @@ public class JobportalsJobpost {
 
     @ManyToOne
     @JoinColumn(name = "recruiter_id")
-    private JobportalsCompany recruiter;
+    private JobportalsUser recruiter;
 
     @ManyToOne
     @JoinColumn(name = "experience_id")

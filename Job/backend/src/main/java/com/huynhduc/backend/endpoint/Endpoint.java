@@ -46,7 +46,9 @@ public class Endpoint {
 
     // ====================== RECRUITER ENDPOINTS ======================
     public static final String[] RECRUITER_GET_ENDPOINTS = {
+            "/careers/**",
             "/users/{userId}/company",
+            "/users/{id}/job-post",
             "/users/{userId}/job-posts",
             "/users/{userId}/job-posted",
             "/companies/{companyId}/view",
@@ -57,11 +59,12 @@ public class Endpoint {
 
     public static final String[] RECRUITER_POST_ENDPOINTS = {
             "/job-posts/",
-            "/reply-seeker/"
+            "/reply-seeker/",
+            "/users/{userId}/job-post",
     };
 
     public static final String[] RECRUITER_PUT_ENDPOINTS = {
-            "/job-posts/{jobPostId}"
+            "/job-posts/{id}"
     };
 
     public static final String[] RECRUITER_DELETE_ENDPOINTS = {
