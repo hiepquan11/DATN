@@ -1,4 +1,4 @@
-package com.huynhduc.backend.controller;
+package com.huynhduc.backend.controller.RecruiterController;
 
 import com.huynhduc.backend.entity.JobportalsJobpost;
 
@@ -14,9 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -42,7 +39,7 @@ public class RecruiterController {
             String token = null;
             if (request.getCookies() != null) {
                 for (var cookie : request.getCookies()) {
-                    if ("accessToken".equals(cookie.getName())) {
+                    if ("access_token".equals(cookie.getName())) {
                         token = cookie.getValue();
                         break;
                     }

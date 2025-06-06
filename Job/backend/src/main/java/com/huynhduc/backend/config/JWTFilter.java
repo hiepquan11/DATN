@@ -35,7 +35,7 @@ public class JWTFilter extends OncePerRequestFilter {
         // Lấy token từ cookie có tên "access_token"
         if (request.getCookies() != null) {
             for (var cookie : request.getCookies()) {
-                if ("accessToken".equals(cookie.getName())) {
+                if ("access_token".equals(cookie.getName())) {
                     token = cookie.getValue();
                     break;
                 }

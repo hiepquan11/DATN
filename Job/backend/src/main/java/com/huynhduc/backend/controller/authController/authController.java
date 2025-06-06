@@ -65,8 +65,8 @@ public class authController {
         try {
             AuthDTO authDTO = userService.login(loginDTO.getUsername(), loginDTO.getPassword());
 
-            CookieUtils.addCookie(response, "accessToken", authDTO.getAccessToken(), 60 * 15, true, true, "/");
-            CookieUtils.addCookie(response, "refreshToken", authDTO.getRefreshToken(), 60 * 60 * 24 * 7, true, true, "/");
+            CookieUtils.addCookie(response, "access_token", authDTO.getAccessToken(), 60 * 15, true, true, "/");
+            CookieUtils.addCookie(response, "refresh_token", authDTO.getRefreshToken(), 60 * 60 * 24 * 7, true, true, "/");
 
             String userJson = new ObjectMapper().writeValueAsString(authDTO.getUser());
             String encodedUserJson = URLEncoder.encode(userJson, StandardCharsets.UTF_8.toString());
