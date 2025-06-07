@@ -36,14 +36,11 @@ public class RecruiterController {
             HttpServletRequest request) {
 
         try {
+            String authHeader = request.getHeader("Authorization");
             String token = null;
-            if (request.getCookies() != null) {
-                for (var cookie : request.getCookies()) {
-                    if ("access_token".equals(cookie.getName())) {
-                        token = cookie.getValue();
-                        break;
-                    }
-                }
+
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                token = authHeader.substring(7);
             }
 
             if (token == null || !jwtService.isTokenValid(token, jwtService.extractUsername(token))) {
@@ -61,7 +58,6 @@ public class RecruiterController {
             }
 
             jobPost.setRecruiter(authenticatedUser);
-
             JobportalsJobpost created = jobPostService.createJobPost(jobPost);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(

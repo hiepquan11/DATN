@@ -50,10 +50,10 @@ public class JobportalsJobpost {
     private Date updated_date;
 
     @Column(name = "is_active")
-    private Integer is_active;
+    private Boolean is_active;
 
     @Column(name = "is_urgent_job")
-    private Integer is_urgent_job;
+    private Boolean is_urgent_job;
 
     @Column(name = "address")
     private String address;

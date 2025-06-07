@@ -11,14 +11,13 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
@@ -43,8 +42,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(
-                configurer -> configurer
+        http
+                .cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowedOrigins(List.of("http://localhost:3000"));  // FE domain
+                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    config.setAllowedHeaders(List.of("*"));
+                    config.setAllowCredentials(true);
+                    return config;
+                }))
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers(Endpoint.PUBLIC_GET_ENDPOINTS).permitAll()
                         .requestMatchers(Endpoint.PUBLIC_POST_ENDPOINTS).permitAll()
                         .requestMatchers(Endpoint.AUTHENTICATED_COMMON_ENDPOINTS).authenticated()
@@ -62,26 +70,14 @@ public class SecurityConfig {
                         .requestMatchers(Endpoint.SEEKER_POST_ENDPOINTS).hasRole("SEEKER")
                         .requestMatchers(Endpoint.SEEKER_PUT_ENDPOINTS).hasRole("SEEKER")
                         .requestMatchers(Endpoint.SEEKER_DELETE_ENDPOINTS).hasRole("SEEKER")
-
-        );
-
-        http.exceptionHandling(exceptionHandlingConfigurer ->
-                exceptionHandlingConfigurer
+                )
+                .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationEntryPoint)
-        );
-        http.cors(cors ->{
-            cors.configurationSource(request -> {
-                CorsConfiguration corsConfiguration = new CorsConfiguration();
-                corsConfiguration.addAllowedOrigin("*");
-                corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-                corsConfiguration.addAllowedHeader("*");
-                return corsConfiguration;
-            });
-        });
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        http.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http.httpBasic(Customizer.withDefaults());
-        http.csrf(csrf->csrf.disable());
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .httpBasic(Customizer.withDefaults());
+
         return http.build();
     }
 

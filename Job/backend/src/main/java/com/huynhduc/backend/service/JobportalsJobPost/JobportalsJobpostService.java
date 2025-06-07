@@ -9,10 +9,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.criteria.Predicate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
+import java.util.*;
 
 @Service
 public class JobportalsJobpostService implements JobportalsJobPostInterface {
@@ -33,6 +31,10 @@ public class JobportalsJobpostService implements JobportalsJobPostInterface {
 
     @Override
     public JobportalsJobpost createJobPost(JobportalsJobpost jobPost) {
+
+        jobPost.setCreated_date(new Date());
+        jobPost.setUpdated_date(new Date());
+
         return repository.save(jobPost);
     }
 
