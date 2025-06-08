@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import CardNewPost from "../../../components/dashboard/recruiter/CardNewPost";
 
 const NewPost = () => {
-  
+
   return (
     <>
       <Typography variant="h6" pb={1} gutterBottom component="div">

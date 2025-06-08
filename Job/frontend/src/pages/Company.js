@@ -23,12 +23,12 @@ const Company = () => {
       try {
         const res = await Api.get(`${endpoints["companies"]}?${query}`);
         if (res.status === 200) {
-          const data = res.data;
+          const data = res.data.data;
 
-          setCompanies(data.results);
+          setCompanies(data.content);
           setPagination({
             count: data.count,
-            sizeNumber: Math.ceil(data.count / pageSize),
+            sizeNumber: Math.ceil(data.count / data.page_size),
           });
         }
       } catch (err) {

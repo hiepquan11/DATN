@@ -65,7 +65,7 @@ const CardPosted = () => {
         const res = await authApi().get(endpoints["post-of-user"](user.id));
 
         if (res.status === 200) {
-          setJobPosts(res.data);
+          setJobPosts(res.data.data);
         }
       } catch (err) {
         console.error(err);

@@ -86,7 +86,7 @@ const CardCompanyInfo = () => {
         const res = await authApi().get(endpoints["company-info"](user.id));
 
         if (res.status === 200) {
-          setCompanyInfo(res.data);
+          setCompanyInfo(res.data.data);
         }
       } catch (err) {
         console.error(err);

@@ -24,16 +24,14 @@ const CardJobPostActivity = () => {
     const loadJobPosts = async () => {
       try {
         const res = await authApi().get(endpoints["post-of-user"](user.id));
-
-        if (res.status === 200) {
-          setJobPosts(res.data);
-          if (res.data.length > 0) {
-            setSelectJobPost({
-              ...selectJobPost,
-              id: res.data[0].id,
-              jobName: "",
-            });
-          }
+        console.log(res.data.data);
+        if (Array.isArray(res.data.data) && res.data.data.length > 0) {
+          setJobPosts(res.data.data);
+          setSelectJobPost(prev => ({
+            ...prev,
+            id: res.data.data[0].id,
+            jobName: "",
+          }));
         }
       } catch (err) {
         console.error(err);

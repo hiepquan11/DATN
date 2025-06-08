@@ -37,27 +37,29 @@ const CompanyDetail = () => {
   const [companyDetail, setCompanyDetail] = useState(null);
   const [rate, setRate] = useState(0);
 
-  useEffect(() => {
-    const addViewComapny = async () => {
-      try {
-        Api.post(endpoints["company-view"](companyId));
-      } catch (err) {
-        console.error(err);
-      }
-    };
+  // useEffect(() => {
+  //   const addViewComapny = async () => {
+  //     try {
+  //       Api.post(endpoints["company-view"](companyId));
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
 
-    addViewComapny();
-  }, []);
+  //   addViewComapny();
+  // }, []);
 
+  
   useEffect(() => {
     const loadCompanyDetail = async () => {
       try {
-        const res = await authApi().get(endpoints["company-detail"](companyId));
+        const res = await authApi().get(endpoints["company-detail"](companyId))
+        
+        console.log("CompanyDetail: ", res);
 
         if (res.status === 200) {
-          setCompanyDetail(res.data);
-          console.warn(res.data);
-          setRate(res.data.rate);
+          setCompanyDetail(res.data.data);
+          // setRate(res.data.data.rate);
           setIsLoadingCompanyDetail(false);
         }
       } catch (err) {
@@ -68,33 +70,34 @@ const CompanyDetail = () => {
     loadCompanyDetail();
   }, [companyId]);
 
-  const onRating = (rate) => {
-    const rating = async () => {
-      try {
-        const res = await authApi().post(
-          endpoints["company-rating"](companyId),
-          {
-            rating: rate,
-          }
-        );
 
-        if (res.status === 200) {
-          setRate(res.data.rating);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
+  // const onRating = (rate) => {
+  //   const rating = async () => {
+  //     try {
+  //       const res = await authApi().post(
+  //         endpoints["company-rating"](companyId),
+  //         {
+  //           rating: rate,
+  //         }
+  //       );
 
-    confirm({
-      description: `Đánh giá ${rate} sao cho công ty này`,
-      title: `Bạn có chắc chắn đánh giá ${rate} sao?`,
-      confirmationText: "Có",
-      cancellationText: "Không",
-    })
-      .then(() => rating())
-      .catch(() => console.log("Error."));
-  };
+  //       if (res.status === 200) {
+  //         setRate(res.data.rating);
+  //       }
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
+
+  //   confirm({
+  //     description: `Đánh giá ${rate} sao cho công ty này`,
+  //     title: `Bạn có chắc chắn đánh giá ${rate} sao?`,
+  //     confirmationText: "Có",
+  //     cancellationText: "Không",
+  //   })
+  //     .then(() => rating())
+  //     .catch(() => console.log("Error."));
+  // };
 
   console.log("CompanyDetail: render");
   return (
@@ -140,15 +143,15 @@ const CompanyDetail = () => {
                   }}
                   style={{ marginTop: -30 }}
                 >
-                  <Avatar
+                  {/* <Avatar
                     sx={{
                       width: "100%",
                       height: "100%",
                       backgroundColor: "white",
                     }}
-                    variant="rounded"
-                    src={companyDetail.recruiter.avatar}
-                  />
+                    // variant="rounded"
+                    // src={companyDetail.recruiter.}
+                  /> */}
                 </Box>
                 <Box sx={{ flexGrow: 1 }}>
                   <Box>
@@ -204,13 +207,13 @@ const CompanyDetail = () => {
                             lg: "left",
                           }}
                         >
-                          <Rating
+                          {/* <Rating
                             name="size-large"
                             precision={1}
                             size="large"
                             value={rate}
                             onChange={(event, newValue) => onRating(newValue)}
-                          />
+                          /> */}
                         </Stack>
                       )}
                     </CardContent>

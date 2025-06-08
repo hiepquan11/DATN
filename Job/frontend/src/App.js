@@ -192,14 +192,14 @@ const App = () => {
               }
             >
               {/* tao company cua nha tuyen dung khi lan dau dang nhap */}
-              <Route
+              {/* <Route
                 element={
                   <RequireRoute
                     isAllowed={user && user.company}
                     redirectPath="/recruiter-company/"
                   />
                 }
-              >
+              > */}
                 <Route path="/recruiter" element={<Dashboard />}>
                   <Route
                     path="general-management/"
@@ -222,7 +222,7 @@ const App = () => {
                     }
                   />
                 </Route>
-              </Route>
+              {/* </Route> */}
             </Route>
             {/* recruiter permission */}
 

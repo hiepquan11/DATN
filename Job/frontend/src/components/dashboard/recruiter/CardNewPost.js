@@ -142,7 +142,7 @@ const CardNewPost = ({ type, jobPostId }) => {
         );
 
         if (res.status === 200) {
-          setPostDetail(res.data);
+          setPostDetail(res.data.data);
         }
       } catch (err) {
         console.error(err);
@@ -908,3 +908,16 @@ const CardNewPost = ({ type, jobPostId }) => {
   );
 };
 export default CardNewPost;
+
+
+// import React from "react";
+
+// const CardNewPost = () => {
+//   return (
+//     <div>
+//       <h1>Card New Post</h1>
+//       {/* Add your card content here */}
+//     </div>
+//   );
+// }
+// export default CardNewPost;

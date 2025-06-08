@@ -138,19 +138,21 @@ const CardJobSeekerApplied = (props) => {
           endpoints["applied-job-post"](idJobPost)
         );
 
+        console.log(res.data.data);
+
         if (res.status === 200) {
           // thanh cong
           let datas = [];
-          res.data.forEach((d) => {
+          res.data.data.forEach((d) => {
             datas.push({
               id: d.id,
               seeker_id: d.seeker.id,
-              job_seeker_profile_id: d.seeker.job_seeker_profile.id,
-              full_name: d.seeker.job_seeker_profile
-                ? d.seeker.job_seeker_profile.full_name
+              job_seeker_profile_id: d.seeker.listJobSeekerProfiles.id,
+              full_name: d.seeker.listJobSeekerProfiles
+                ? d.seeker.listJobSeekerProfiles.full_name
                 : "Không có dữ liệu",
-              phone_number: d.seeker.job_seeker_profile
-                ? d.seeker.job_seeker_profile.phone_number
+              phone_number: d.seeker.listJobSeekerProfiles
+                ? d.seeker.listJobSeekerProfiles.phone_number
                 : "Không có dữ liệu",
               email: d.seeker.email,
               avatar: d.seeker.avatar,

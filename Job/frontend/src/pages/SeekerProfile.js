@@ -29,6 +29,8 @@ const SeekerProfile = () => {
         const res = await Api.get(
           `${endpoints["job-seeker-profiles"]}?${query}`
         );
+
+
         const data = await res.data;
 
         setJobSeekerProfiles(data.results);
@@ -139,7 +141,7 @@ const SeekerProfile = () => {
                       >
                         <CardItemJobSeekerProfile
                           id={jobSeekerProfile.id}
-                          avatar={jobSeekerProfile.job_seeker.avatar}
+                          avatar={jobSeekerProfile.seeker.avatar}
                           fullName={jobSeekerProfile.full_name}
                           desiredJob={jobSeekerProfile.desired_job}
                         />

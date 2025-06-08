@@ -8,14 +8,14 @@ export const endpoints = {
   salaries: "/salaries/",
   positions: "/positions/",
   "working-forms": "/working-forms/",
-  "top-companies": "/top-company/",
+  "top-companies": "/top-company",
   "job-posts": "/job-posts/",
   "job-post-detail": (jobPostId) => `/job-posts/${jobPostId}`,
   "job-posts-retrieve": (jobPostId) => `/job-posts/${jobPostId}/`,
   "job-post-view": (jobPostId) => `/job-posts/${jobPostId}/view`,
   "job-post-recruiter": (jobPostId) => `/job-posts/${jobPostId}/job-post/`,
   "applied-job-post": (jobPostId) =>
-    `/job-posts/${jobPostId}/applied-job-post/`,
+    `/job-posts/${jobPostId}/applied-job-post`,
   "job-seeker-profiles": "/job-seeker-profiles/",
   "job-seeker-profile-detail": (jobSeekerProfileId) =>
     `/job-seeker-profiles/${jobSeekerProfileId}/`,
@@ -36,13 +36,13 @@ export const endpoints = {
   "update-experience-detail": (experienceDetailId) =>
     `/experience-details/${experienceDetailId}/`,
   "add-experience-detail": "/experience-details/",
-  "company-detail": (companyId) => `/companies/${companyId}/`,
+  "company-detail": (companyId) => `/companies/${companyId}`,
   // create user
   users: `/users/`,
   "current-user": "/users/current-user/",
   "change-password": "/users/password/",
   "user-job-seeker-profile": (userId) => `/users/${userId}/job-seeker-profile/`,
-  "company-info": (userId) => `/users/${userId}/company/`,
+  "company-info": (userId) => `/users/${userId}/company`,
   "company-view": (companyId) => `/companies/${companyId}/view/`,
   "company-images": (companyId) => `/companies/${companyId}/image-companies/`,
   "company-image": (companyId) => `/companies/${companyId}/image-company/`,
@@ -51,8 +51,8 @@ export const endpoints = {
   "company-rating": (companyId) => `/companies/${companyId}/rating/`,
   "company-stats": (companyId) => `/companies/${companyId}/stats/`,
   "image-companies": (imageCompanyId) => `/image-companies/${imageCompanyId}/`,
-  "post-of-user": (userId) => `/users/${userId}/job-posts/`,
-  "posted-of-user": (userId) => `/users/${userId}/job-posted/`,
+  "post-of-user": (userId) => `/users/${userId}/job-post`,
+  "posted-of-user": (userId) => `/users/${userId}/job-posted`,
 
   "user-save-job-posts": (userId) => `/users/${userId}/save-job-posts/`,
   "user-save-job-post": (userId) => `/users/${userId}/save-job-post/`,
@@ -82,6 +82,8 @@ export default axios.create({
 export const authApi = (isFormData = false) => {
   const accessToken = cookie.load("access_token");
 
+  console.log("Access Token:", accessToken);
+
   const headers = {
     ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
     "Content-Type": isFormData
@@ -92,5 +94,22 @@ export const authApi = (isFormData = false) => {
   return axios.create({
     baseURL: "http://localhost:8080/",
     headers: headers,
+    withCredentials: true,
   });
 };
+
+// export const authApi = (isFormData = false) => {
+//   const accessToken = cookie.load("access_token");
+
+//   const headers = {
+//     ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+//     // Khi gửi formData thì không set Content-Type để Axios tự xử lý
+//     ...(isFormData ? {} : { "Content-Type": "application/json" }),
+//   };
+
+//   return axios.create({
+//     baseURL: "http://localhost:8080/",
+//     headers: headers,
+//     withCredentials: true,  // quan trọng để gửi cookie lên backend nếu backend dùng cookie
+//   });
+// }

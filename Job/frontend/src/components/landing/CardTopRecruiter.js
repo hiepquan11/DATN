@@ -43,7 +43,7 @@ const CardTopRecruiter = () => {
       try {
         const res = await Api.get(endpoints["top-companies"]);
 
-        const data = ConvertOneArrToTwoArr(res.data);
+        const data = ConvertOneArrToTwoArr(res.data.data);
 
         setTopCompanies(data);
         setMaxSteps(data.length);

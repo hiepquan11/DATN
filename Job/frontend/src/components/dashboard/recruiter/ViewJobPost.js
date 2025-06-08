@@ -40,7 +40,7 @@ const ViewJobPost = (props) => {
         );
 
         if (res.status === 200) {
-          setJobPostDetail(res.data);
+          setJobPostDetail(res.data.data);
         }
       } catch (err) {
         console.error(err);
@@ -209,7 +209,7 @@ const ViewJobPost = (props) => {
                           sx={{ fontWeight: "bold" }}
                           gutterBottom
                         >
-                          {jobPostDetail.recruiter.company.field_operation}
+                          {/* {jobPostDetail.recruiter.company.field_operation} */}
                         </Typography>
                       </Grid>
                       <Grid item xs={6} sm={6} md={5} lg={6}>
