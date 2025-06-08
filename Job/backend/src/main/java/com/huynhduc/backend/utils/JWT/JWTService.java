@@ -84,6 +84,16 @@ public class JWTService {
         return claimsResolver.apply(claims);
     }
 
+    public boolean isRefreshTokenValid(String refreshToken) {
+        try {
+            String username = extractUsername(refreshToken);
+            JobportalsUser user = userRepo.findByUsername(username);
+            return user != null && !isTokenExpired(refreshToken);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     private Claims extractAllClaims(String token) {
         JwtParser parser = Jwts.parser()
                 .setSigningKey(getSignInKey())

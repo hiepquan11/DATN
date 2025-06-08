@@ -1,5 +1,6 @@
 package com.huynhduc.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,14 +37,15 @@ public class JobportalsUser {
     @Column(name = "date_joined")
     private Date dateJoined;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userId")
-    private List<JobportalsComment> listComments;
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userId")
+//    private List<JobportalsComment> listComments;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "jobSeekerId")
-    private List<JobportalsJobseekerprofile> listJobSeekerProfiles;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "seeker")
+    @JsonIgnore
+    private JobportalsJobseekerprofile listJobSeekerProfiles;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "jobportalsUser")
-    private List<JobportalsRating> ratingList;
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "jobportalsUser")
+//    private List<JobportalsRating> ratingList;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

@@ -12,15 +12,26 @@ import java.io.IOException;
 
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(HttpServletRequest request,
+                         HttpServletResponse response,
+                         AuthenticationException authException)
+            throws IOException, ServletException {
+
+        if (response.isCommitted()) {
+            return;
+        }
+
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        response.setContentType("application/json");
+        response.setContentType("application/json;charset=UTF-8");
 
-        // Tạo thông báo lỗi dưới dạng JSON
-        String errorMessage = "{\"error\": \"Unauthorized\", \"message\": \"" + authException.getMessage() + "\"}";
+        String errorMessage = String.format(
+                "{\"error\": \"Unauthorized\", \"message\": \"%s\"}",
+                authException.getMessage().replace("\"", "\\\"")
+        );
 
-        // Gửi thông báo lỗi ra response
         response.getWriter().write(errorMessage);
+        response.getWriter().flush();
     }
 }

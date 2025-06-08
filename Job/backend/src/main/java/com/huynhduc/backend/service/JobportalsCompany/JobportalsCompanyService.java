@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class JobportalsCompanyService implements JobportalsCompanyInterface {
@@ -28,6 +27,14 @@ public class JobportalsCompanyService implements JobportalsCompanyInterface {
             throw new RuntimeException("Không có công ty nào được tìm thấy.");
         }
         return companies;
+    }
+
+    @Override
+    public JobportalsCompany getByRecruiterId(int id) {
+        if (!companyRepo.existsById(id)) {
+            throw new RuntimeException("Recruiter is not existing");
+        }
+        return companyRepo.findByRecruiterId(id);
     }
 
     @Override

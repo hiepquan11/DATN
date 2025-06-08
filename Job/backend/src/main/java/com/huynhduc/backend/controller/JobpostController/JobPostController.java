@@ -173,11 +173,13 @@ public class JobPostController {
 
             return ResponseEntity.ok(new SuccessResponse<>(200, "Tìm kiếm bài đăng thành công", responseData));
 
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ErrorResponse(500, "Không thể tìm kiếm bài đăng", e.getMessage()));
         }
     }
 
-
+    public ResponseEntity<?> getSeekerByJobPostId(@PathVariable int id) {
+        return null;
+    }
 }

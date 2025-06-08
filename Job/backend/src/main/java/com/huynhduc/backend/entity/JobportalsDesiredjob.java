@@ -1,5 +1,7 @@
 package com.huynhduc.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.huynhduc.backend.DTO.CityDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,22 +14,24 @@ public class JobportalsDesiredjob {
     @Column(name = "id")
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private JobportalsUser jobportalsUser;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "career_id")
+    private JobportalsCareer career;
 
-    @Column(name = "position")
-    private String position;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "city_id")
+    private JobportalsCity city;
 
-    @Column(name = "career_id")
-    private Integer career_id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "salary_id")
+    private JobportalsSalary salary;
 
-    @Column(name = "city_id")
-    private Integer city_id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "working_form_id")
+    private JobportalsWorkingform working_form;
 
-    @Column(name = "salary_id")
-    private Integer salary_id;
-
-    @Column(name = "working_form_id")
-    private Integer working_form_id;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_seeker_profile_id")
+    @JsonIgnore
+    private JobportalsJobseekerprofile seeker;
 }

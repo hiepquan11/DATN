@@ -19,6 +19,7 @@ public interface JobportalsJobPostInterface {
 
     List<JobportalsJobpost> getAllJobPosts();
 
+    List<JobportalsJobpost> getJobPostsByRecruiterId(int id);
 
     void deleteJobPost(int id);
 }

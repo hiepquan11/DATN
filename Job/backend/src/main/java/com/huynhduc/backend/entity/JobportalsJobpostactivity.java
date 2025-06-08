@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Entity
@@ -14,17 +15,17 @@ public class JobportalsJobpostactivity {
     @Column(name = "id")
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "jobpost_id")
-    private JobportalsJobpost jobportalsJobpost;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "job_post_id")
+    private JobportalsJobpost jobPost;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private JobportalsUser jobportalsUser;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "seeker_id")
+    private JobportalsUser seeker;
 
     @Column(name = "apply_date")
-    private LocalDateTime apply_date;
+    private Date apply_date;
 
     @Column(name = "status")
-    private Integer status;
+    private Boolean status;
 }

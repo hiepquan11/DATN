@@ -15,7 +15,8 @@ public class Endpoint {
             "/job-posts/**",
             "/companies/**",
             "/oauth2-info",
-            "/curriculum-vitae/**"
+            "/curriculum-vitae/**",
+            "/job-seeker-profiles/**"
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = {
@@ -54,7 +55,8 @@ public class Endpoint {
             "/companies/{companyId}/view",
             "/companies/{companyId}/image-companies",
             "/companies/{companyId}/comments",
-            "/companies/{companyId}/stats"
+            "/companies/{companyId}/stats",
+
     };
 
     public static final String[] RECRUITER_POST_ENDPOINTS = {
@@ -76,11 +78,13 @@ public class Endpoint {
             "/users/current-user",
             "/users/{userId}/job-seeker-profile",
             "/users/{userId}/save-job-posts",
+            "/users/{id}/company",
             "/users/{userId}/job-posts-activity",
             "/job-seeker-profiles/{id}/",
             "/job-seeker-profiles/{id}/view",
             "/job-seeker-profiles/{id}/stats",
-            "/job-seeker-profiles/{id}/curriculum-vitae"
+            "/job-seeker-profiles/{id}/curriculum-vitae",
+            "/job-posts/{id}/applied-job-post"
     };
 
     public static final String[] SEEKER_POST_ENDPOINTS = {

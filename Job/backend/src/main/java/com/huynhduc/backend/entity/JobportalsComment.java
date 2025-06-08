@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Entity
@@ -16,10 +17,10 @@ public class JobportalsComment {
     private int id;
 
     @Column(name = "created_date")
-    private LocalDateTime createdDate;
+    private Date createdDate;
 
     @Column(name = "updated_date")
-    private LocalDateTime updatedDate;
+    private Date updatedDate;
 
     @Column(name = "content", nullable = false)
     private String content;
@@ -34,6 +35,5 @@ public class JobportalsComment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private JobportalsUser userId;
 }

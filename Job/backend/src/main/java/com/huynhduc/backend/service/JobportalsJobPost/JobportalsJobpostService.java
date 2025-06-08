@@ -1,6 +1,7 @@
 package com.huynhduc.backend.service.JobportalsJobPost;
 
 import com.huynhduc.backend.entity.JobportalsJobpost;
+import com.huynhduc.backend.entity.JobportalsUser;
 import com.huynhduc.backend.repository.JobportalsJobPostRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,8 +26,8 @@ public class JobportalsJobpostService implements JobportalsJobPostInterface {
 
     @Override
     public JobportalsJobpost getJobPostById(int id) {
-        Optional<JobportalsJobpost> optional = repository.findById(id);
-        return optional.orElse(null);
+       JobportalsJobpost optional = repository.findById(id);
+        return optional;
     }
 
     @Override
@@ -45,6 +46,10 @@ public class JobportalsJobpostService implements JobportalsJobPostInterface {
             return repository.save(jobPost);
         }
         return null;
+    }
+
+    public List<JobportalsJobpost> getJobPostsByRecruiterId(int id) {
+        return repository.findByRecruiterIdOrderByCreatedDate(id);
     }
 
     @Override
@@ -93,11 +98,14 @@ public class JobportalsJobpostService implements JobportalsJobPostInterface {
                 predicates.add(cb.equal(root.get("working_form").get("id"), Integer.parseInt(workingForm)));
             }
 
-            //filter by career
+            // filter by career
             String career = filters.get("career");
             if (isNumeric(career)) {
                 predicates.add(cb.equal(root.get("career").get("id"), Integer.parseInt(career)));
             }
+
+            assert query != null;
+            query.orderBy(cb.desc(root.get("created_date")));
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };

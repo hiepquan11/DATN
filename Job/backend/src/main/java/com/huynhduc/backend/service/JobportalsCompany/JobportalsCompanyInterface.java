@@ -19,5 +19,7 @@ public interface JobportalsCompanyInterface {
 
     List<JobportalsCompany> getAllCompanies();
 
+    JobportalsCompany getByRecruiterId(int id);
+
     void deleteCompany(int id);
 }

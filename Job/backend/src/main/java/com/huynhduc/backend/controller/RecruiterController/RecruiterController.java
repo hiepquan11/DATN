@@ -1,8 +1,10 @@
 package com.huynhduc.backend.controller.RecruiterController;
 
+import com.huynhduc.backend.entity.JobportalsCompany;
 import com.huynhduc.backend.entity.JobportalsJobpost;
 
 import com.huynhduc.backend.entity.JobportalsUser;
+import com.huynhduc.backend.service.JobportalsCompany.JobportalsCompanyService;
 import com.huynhduc.backend.service.JobportalsJobPost.JobportalsJobpostService;
 import com.huynhduc.backend.service.JobportalsUser.JobportalsUserService;
 import com.huynhduc.backend.utils.JWT.JWTService;
@@ -16,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class RecruiterController {
@@ -25,6 +29,9 @@ public class RecruiterController {
 
     @Autowired
     private JobportalsUserService userService;
+
+    @Autowired
+    private JobportalsCompanyService companyService;
 
     @Autowired
     private JWTService jwtService;
@@ -72,7 +79,6 @@ public class RecruiterController {
     }
 
     @PatchMapping(value = "/job-posts/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasRole('RECRUITER')")
     public ResponseEntity<?> updateJobPost(
             @PathVariable int id,
             @ModelAttribute JobportalsJobpost jobPost) {
@@ -89,12 +95,25 @@ public class RecruiterController {
 
     @GetMapping("/{id}/job-post")
     public ResponseEntity<?> getJobPostDetail (@PathVariable int id) {
-        JobportalsJobpost jobPost = jobPostService.getJobPostById(id);
-        if (jobPost == null) {
+        List<JobportalsJobpost> listJob = jobPostService.getJobPostsByRecruiterId(id);
+        if (listJob == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ErrorResponse(HttpStatus.NOT_FOUND.value(), "Not found",null)
             );
         }
-        return ResponseEntity.ok(new SuccessResponse<>(200, "Lấy dữ liệu thành công", jobPost));
+        return ResponseEntity.ok(new SuccessResponse<>(200, "Lấy dữ liệu thành công", listJob));
+    }
+
+    @GetMapping("/{id}/company")
+    public ResponseEntity<?> getByRecruiterId(@PathVariable int id) {
+        try {
+            JobportalsCompany company = companyService.getByRecruiterId(id);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new SuccessResponse<>(200,"Success", company)
+            );
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse(500,"Cannot get company by recruiter id", e.getMessage()));
+        }
     }
 }

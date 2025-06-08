@@ -4,6 +4,7 @@ import com.huynhduc.backend.entity.JobportalsCompany;
 import com.huynhduc.backend.service.JobportalsCompany.JobportalsCompanyService;
 import com.huynhduc.backend.utils.Response.ErrorResponse;
 import com.huynhduc.backend.utils.Response.SuccessResponse;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -101,4 +102,6 @@ public class JobportalsCompanyController {
                     .body(new ErrorResponse(500, "Không thể xóa công ty", e.getMessage()));
         }
     }
+
+
 }
