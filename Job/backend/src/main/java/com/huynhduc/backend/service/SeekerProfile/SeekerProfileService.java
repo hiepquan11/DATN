@@ -28,4 +28,10 @@ public class SeekerProfileService implements SeekerProfileInterface{
 
         return repo.findAll(spec, pageable);
     }
+
+    @Override
+    public JobportalsJobseekerprofile getJobSeekerProfileById(int id) {
+        return repo.findBySeekerId(id);
+    }
+
 }

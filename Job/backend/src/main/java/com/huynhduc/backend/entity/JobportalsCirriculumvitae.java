@@ -15,5 +15,7 @@ public class JobportalsCirriculumvitae {
     @Column(name = "url_cv", nullable = false)
     private String cvUrl;
 
-
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "job_seeker_profile_id")
+    private JobportalsJobseekerprofile profile;
 }

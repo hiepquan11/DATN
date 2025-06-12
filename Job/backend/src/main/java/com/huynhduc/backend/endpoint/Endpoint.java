@@ -78,6 +78,8 @@ public class Endpoint {
             "/users/current-user",
             "/users/{userId}/job-seeker-profile",
             "/users/{userId}/save-job-posts",
+            "/job-seeker-profiles/{id}/desired-job",
+            "/job-seeker-profiles/{id}/education-detail",
             "/users/{id}/company",
             "/users/{userId}/job-posts-activity",
             "/job-seeker-profiles/{id}/",

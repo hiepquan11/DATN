@@ -9,4 +9,5 @@ import java.util.Map;
 public interface SeekerProfileInterface {
     Page<JobportalsJobseekerprofile> getSeekerProfileWithFilters(Map<String, String> filters, Pageable pageable);
 
+    JobportalsJobseekerprofile getJobSeekerProfileById(int id);
 }
