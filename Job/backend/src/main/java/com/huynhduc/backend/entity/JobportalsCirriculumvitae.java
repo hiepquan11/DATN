@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "jobportals_cirriculumvitae")
+@Table(name = "jobportals_curriculumvitae")
 public class JobportalsCirriculumvitae {
 
     @Id
@@ -15,7 +15,7 @@ public class JobportalsCirriculumvitae {
     @Column(name = "url_cv", nullable = false)
     private String cvUrl;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "job_seeker_profile_id")
     private JobportalsJobseekerprofile profile;
 }

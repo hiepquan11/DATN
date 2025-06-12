@@ -86,7 +86,8 @@ public class Endpoint {
             "/job-seeker-profiles/{id}/view",
             "/job-seeker-profiles/{id}/stats",
             "/job-seeker-profiles/{id}/curriculum-vitae",
-            "/job-posts/{id}/applied-job-post"
+            "/job-posts/{id}/applied-job-post",
+            "/job-seeker-profiles/{userId}/curriculum-vitae",
     };
 
     public static final String[] SEEKER_POST_ENDPOINTS = {
