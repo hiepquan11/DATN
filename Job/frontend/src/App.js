@@ -107,7 +107,7 @@ const App = () => {
                     isAllowed={
                       user &&
                       checkPermission(user, UserRole.SEEKER) &&
-                      user.job_seeker_profile === null
+                      user.listJobSeekerProfiles === null
                     }
                     redirectPath="/"
                     children={<RequestSeekerProfile />}
@@ -154,12 +154,12 @@ const App = () => {
             >
               {/* tao profile cua ung vien khi lan dau dang nhap */}
               <Route
-                element={
-                  <RequireRoute
-                    isAllowed={user && user.job_seeker_profile}
-                    redirectPath="/seeker-profile/"
-                  />
-                }
+                // element={
+                //   <RequireRoute
+                //     isAllowed={user && user.job_seeker_profile}
+                //     redirectPath="/seeker-profile/"
+                //   />
+                // }
               >
                 <Route path="/seeker" element={<Dashboard />}>
                   <Route

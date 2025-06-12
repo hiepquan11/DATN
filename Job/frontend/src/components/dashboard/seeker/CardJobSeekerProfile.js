@@ -86,7 +86,7 @@ const CardJobSeekerProfile = () => {
         );
 
         if (res.status === 200) {
-          setJobSeekerProfile(res.data);
+          setJobSeekerProfile(res.data.data);
           setIsloadingJobSeekerProfile(false);
         }
       } catch (err) {

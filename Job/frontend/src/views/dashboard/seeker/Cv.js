@@ -72,11 +72,13 @@ const Cv = () => {
     const loadCv = async () => {
       try {
         const res = await Api.get(
-          endpoints["job-seeker-profile-cv"](user.job_seeker_profile.id)
+          endpoints["job-seeker-profile-cv"](user.id)
         );
 
-        if (res.status === 200 && res.data["id"] !== undefined) {
-          setCv(res.data);
+        console.log(res);
+
+        if (res.status === 200) {
+          setCv(res.data.data[0]);
         } else {
           setCv(null);
         }
@@ -90,13 +92,14 @@ const Cv = () => {
     loadCv();
   }, [flag]);
 
+
   const onUploadCv = () => {
     console.log(cvFile);
     setIsUpload(true);
     const uploadCv = async () => {
       try {
         const res = await authApi().post(
-          endpoints["job-seeker-profile-cv"](user.job_seeker_profile.id),
+          endpoints["job-seeker-profile-cv"](user.id),
           { url_cv: cvFile }
         );
 
@@ -264,7 +267,7 @@ const Cv = () => {
                   }
                 >
                   <Viewer
-                    fileUrl={cv.url_cv}
+                    fileUrl={cv.cvUrl}
                     plugins={[
                       getFilePluginInstance,
                       scrollModePluginInstance,

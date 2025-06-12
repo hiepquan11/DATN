@@ -22,12 +22,12 @@ export const endpoints = {
   "job-seeker-profile-view": (jobSeekerProfileId) =>
     `/job-seeker-profiles/${jobSeekerProfileId}/view/`,
   "job-seeker-profile-cv": (jobSeekerProfileId) =>
-    `/job-seeker-profiles/${jobSeekerProfileId}/curriculum-vitae/`,
+    `/job-seeker-profiles/${jobSeekerProfileId}/curriculum-vitae`,
   "job-seeker-profiles-stats": (jobSeekerProfileId) =>
     `/job-seeker-profiles/${jobSeekerProfileId}/stats/`,
-  "curriculum-vitae": (cvId) => `/curriculum-vitae/${cvId}/`,
+  "curriculum-vitae": (cvId) => `/job-seeker-profiles/${cvId}/curriculum-vitae`,
   "desired-job": (jobSeekerProfileId) =>
-    `/job-seeker-profiles/${jobSeekerProfileId}/desired-job/`,
+    `/job-seeker-profiles/${jobSeekerProfileId}/desired-job`,
   companies: "/companies/",
   "education-detail": (jobSeekerProfileId) =>
     `/job-seeker-profiles/${jobSeekerProfileId}/education-detail/`,
@@ -41,7 +41,7 @@ export const endpoints = {
   users: `/users/`,
   "current-user": "/users/current-user/",
   "change-password": "/users/password/",
-  "user-job-seeker-profile": (userId) => `/users/${userId}/job-seeker-profile/`,
+  "user-job-seeker-profile": (userId) => `/users/${userId}/job-seeker-profile`,
   "company-info": (userId) => `/users/${userId}/company`,
   "company-view": (companyId) => `/companies/${companyId}/view/`,
   "company-images": (companyId) => `/companies/${companyId}/image-companies/`,

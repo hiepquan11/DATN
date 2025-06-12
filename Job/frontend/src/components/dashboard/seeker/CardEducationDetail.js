@@ -64,11 +64,11 @@ const CardEducationDetail = () => {
     const loadEducationDetail = async () => {
       try {
         const res = await authApi().get(
-          endpoints["education-detail"](user.job_seeker_profile.id)
+          endpoints["education-detail"](user.id)
         );
 
         if (res.status === 200) {
-          setEducationDetail(res.data);
+          setEducationDetail(res.data.data);
           setIsloadingEducationDetail(false);
         }
       } catch (err) {

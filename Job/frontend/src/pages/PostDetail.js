@@ -128,6 +128,8 @@ const PostDetail = () => {
           { job_post_id: jobPostDetail.id }
         );
 
+        console.log("res save job post: ", res);
+
         if (res.status === 201) {
           // thong bao luu thanh cong
           dispatch(
@@ -196,6 +198,8 @@ const PostDetail = () => {
           { job_post_id: jobPostDetail.id }
         );
 
+        console.log("toi goi ne ", res);
+
         if (res.status === 201) {
           // thong bao ung tuyen thanh cong
           handleAppliedSucces();
@@ -230,14 +234,14 @@ const PostDetail = () => {
       formData.append("url", "https://github.com/");
       formData.append(
         "url_view_cv",
-        `${window.location.origin}/view-cv/${user.job_seeker_profile.id}/${profileType}/`
+        `${window.location.origin}/view-cv/${user.id}/${profileType}`
       );
       formData.append("job_name", jobPostDetail.job_name);
       formData.append("from_email", email);
       formData.append("to_email", jobPostDetail.recruiter.email);
       formData.append(
         "url",
-        `${window.location.origin}/job-seeker-profiles/${user.job_seeker_profile.id}/`
+        `${window.location.origin}/job-seeker-profiles/${user.id}`
       );
       formData.append("avatar", user.avatar);
 

@@ -73,12 +73,12 @@ const CardDisiredJob = () => {
     const loadDesiredJob = async () => {
       try {
         const res = await authApi().get(
-          endpoints["desired-job"](user.job_seeker_profile.id)
+          endpoints["desired-job"](user.id)
         );
 
         if (res.status === 200) {
         
-          setDesiredJob(res.data);
+          setDesiredJob(res.data.data);
           setIsloadingDesiredJob(false);
         }
       } catch (err) {
@@ -141,7 +141,7 @@ const CardDisiredJob = () => {
         );
 
         if (res.status === 200 || res.status === 201) {
-          setDesiredJob(res.data);
+          setDesiredJob(res.data.data);
           dispatch(
             alertOpen(
               "success",
