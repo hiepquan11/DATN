@@ -43,8 +43,9 @@ public class JobportalsCompany {
     @Column(name = "company_cover_image")
     private String company_cover_image;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruiter_id", nullable = false)
+    @JsonIgnore
     private JobportalsUser recruiter;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -52,5 +53,6 @@ public class JobportalsCompany {
     private JobportalsCity city;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "companyId")
+    @JsonIgnore
     private List<JobportalsComment> comment;
 }

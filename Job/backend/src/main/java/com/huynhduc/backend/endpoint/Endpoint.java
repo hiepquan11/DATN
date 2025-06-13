@@ -93,7 +93,8 @@ public class Endpoint {
     public static final String[] SEEKER_POST_ENDPOINTS = {
             "/users/{userId}/save-job-post",
             "/users/{userId}/job-post-activity",
-            "/apply-job/",
+            "/users/{userId}/apply-job-post",
+            "/apply-job",
             "/comments/**",
             "/experience-details/"
     };

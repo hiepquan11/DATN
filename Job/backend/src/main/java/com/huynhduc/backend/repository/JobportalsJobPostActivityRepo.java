@@ -12,4 +12,6 @@ public interface JobportalsJobPostActivityRepo extends JpaRepository<JobportalsJ
 
     @Query("SELECT j FROM JobportalsJobpostactivity j WHERE j.jobPost.id = :id")
     List<JobportalsJobpostactivity> findByJobPost(int id);
+    List<JobportalsJobpostactivity> findBySeekerId(int seekerId);
+    boolean existsBySeekerIdAndJobPostId(int seekerId, int jobPostId);
 }

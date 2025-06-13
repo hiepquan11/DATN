@@ -44,6 +44,8 @@ public class JobportalsUser {
     @JsonIgnore
     private JobportalsJobseekerprofile listJobSeekerProfiles;
 
+
+
 //    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "jobportalsUser")
 //    private List<JobportalsRating> ratingList;
 
@@ -54,4 +56,7 @@ public class JobportalsUser {
             inverseJoinColumns = @JoinColumn(name = "group_id")
     )
     private Set<JobportalsRole> roles;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "recruiter")
+    private List<JobportalsCompany> company;
 }
