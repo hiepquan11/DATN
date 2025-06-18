@@ -144,7 +144,7 @@ const CardSimilarJobPost = ({ careerId, cityId }) => {
                           variant="filled"
                           size="small"
                           sx={{ fontSize: 12, mr: 1, mb: 1 }}
-                          label={similarJobPost.city.city_name}
+                          label={similarJobPost.city?.city_name}
                         />
                         <Chip
                           variant="filled"

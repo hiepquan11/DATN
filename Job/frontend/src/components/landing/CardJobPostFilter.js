@@ -46,18 +46,22 @@ const CardJobPostFilter = ({
     const loadFilterJobPosts = async () => {
       setIsLoadingFilterJobPosts(true);
       try {
-        const query = `career=${careerId}&city=${cityId}&experience=${experienceId}&salary=${salaryId}&position=${positionId}&working_form=${workingFormId}&is_urgent_job=${isUrgentJob}&page_size=${pageSize}&page=${page}`;
+        const query = `?career=${careerId}&city=${cityId}&experience=${experienceId}&salary=${salaryId}&position=${positionId}&working_form=${workingFormId}&is_urgent_job=${isUrgentJob}&page_size=${pageSize}&page=${page}`;
 
         console.log("query: " + query);
 
         const res = await Api.get(`${endpoints["job-posts"]}?${query}`);
         const data = res.data.data;
 
+        console.log("data: ", data);
+        
+
         setFilterJobPosts(data.content);
         setPagination({
           count: data.count,
           sizeNumber: Math.ceil(data.count / data.page_size),
         });
+        
       } catch (err) {
         console.error(err);
         setFilterJobPosts([]);
@@ -79,6 +83,9 @@ const CardJobPostFilter = ({
     isUrgentJob,
     pageSize,
   ]);
+
+  console.log("filterJobPosts: ", filterJobPosts);
+
 
   const handleChangePage = (event, value) => {
     setPage(value);

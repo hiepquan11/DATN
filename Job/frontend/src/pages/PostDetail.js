@@ -71,7 +71,7 @@ const PostDetail = () => {
     const loadCv = async () => {
       try {
         const res = await Api.get(
-          endpoints["job-seeker-profile-cv"](user.job_seeker_profile.id)
+          endpoints["job-seeker-profile-cv"](user.job_seeker_profile?.id)
         );
 
         if (res.status === 200 && res.data["id"] !== undefined) {
@@ -700,7 +700,7 @@ const PostDetail = () => {
                           sx={{ fontWeight: "bold" }}
                           gutterBottom
                         >
-                          {jobPostDetail.experience.experience_name}
+                          {jobPostDetail.experience?.experience_name}
                         </Typography>
                       </Grid>
                       <Grid item xs={12} sm={6} md={3} lg={3}>
@@ -781,7 +781,7 @@ const PostDetail = () => {
                               color="error"
                               gutterBottom
                             >
-                              {jobPostDetail.career.career_name}
+                              {jobPostDetail.career?.career_name}
                             </Typography>
                           </Grid>
                           <Grid item xs={6} sm={6} md={5} lg={6}>
@@ -817,7 +817,7 @@ const PostDetail = () => {
                               sx={{ fontWeight: "bold" }}
                               gutterBottom
                             >
-                              {jobPostDetail.city.city_name}
+                              {jobPostDetail.city?.city_name}
                             </Typography>
                           </Grid>
                           <Grid item xs={6} sm={6} md={5} lg={6}>
@@ -1142,8 +1142,8 @@ const PostDetail = () => {
                     ></div>
                   </Typography>
                   <CardSimilarJobPost
-                    careerId={jobPostDetail.career.id}
-                    cityId={jobPostDetail.city.id}
+                    careerId={jobPostDetail.career?.id}
+                    cityId={jobPostDetail.city?.id}
                   />
                 </Box>
               </Grid>

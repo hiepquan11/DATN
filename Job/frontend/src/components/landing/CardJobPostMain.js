@@ -15,7 +15,7 @@ const CardJobPostMain = () => {
   const [q] = useSearchParams();
   const [jobPosts, setJobPosts] = useState([]);
   const [pagination, setPagination] = useState({ count: 0, sizeNumber: 0 });
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const pageSize = 16;
 
   useEffect(() => {
@@ -99,7 +99,7 @@ const CardJobPostMain = () => {
                 avatar={jobPost.recruiter.company_cover_image}
                 jobName={jobPost.job_name}
                 companyName={jobPost.recruiter.company_name}
-                cityName={jobPost.city.city_name}
+                cityName={jobPost.city?.city_name}
                 salaryName={jobPost.salary.salary_name}
                 deadline={jobPost.deadline}
                 isUrgentJob={jobPost.is_urgent_job}

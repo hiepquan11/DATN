@@ -22,6 +22,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import alertOpen from "../../../store/actions/AlertCreator";
 import { useConfirm } from "material-ui-confirm";
+import { differenceInCalendarDays } from 'date-fns';
+
 
 const CardNewPost = ({ type, jobPostId }) => {
   const confirm = useConfirm();
@@ -212,30 +214,51 @@ const CardNewPost = ({ type, jobPostId }) => {
 
     console.log("CardNewPost: render");
     const addNewPost = async () => {
-      try {
-        const res = await authApi().post(
-          endpoints["post-of-user"](user.id),
-          formData
-        );
+  try {
+    const now = new Date();
+    const deadline = new Date(formData.get("deadline")); // Lấy từ formData
+    const days = Math.max(differenceInCalendarDays(deadline, now), 1);
+    const pricePerDay = 20000;
+    const totalCost = days * pricePerDay;
 
-        if (res.status === 200 || res.status === 201) {
-          setIsLoadingSave(false);
-          // thong bao cap nhat thanh cong
-          confirm({
-            title: "Đăng tin thành công.",
-            description:
-              "Tin tuyển dụng của bạn đã được đăng thành công. Bạn có muốn tiếp tục đăng tin?",
-            confirmationText: "Đi đến mục tin đã đăng",
-            cancellationText: "Tiếp tục đăng tin",
-          })
-            .then(() => nav("/recruiter/posted/"))
-            .catch((err) => console.err(err));
-        }
-      } catch (err) {
-        // loi
-        setIsLoadingSave(false);
+    await confirm({
+      title: "Xác nhận trước khi đăng tin",
+      description: `
+        Bài đăng sẽ hiển thị trong ${days} ngày.\n
+        Đơn giá mỗi ngày: ${pricePerDay.toLocaleString()} VND.\n
+        Tổng chi phí: ${totalCost.toLocaleString()} VND.\n
+        Bạn có đồng ý thanh toán chi phí này qua VNPay?
+      `,
+      confirmationText: "Tôi đồng ý",
+      cancellationText: "Hủy",
+    });
+
+    // Người dùng đã xác nhận => gọi API tạo job post
+    const res = await authApi().post(
+      endpoints["post-of-user"](user.id),
+      formData
+    );
+
+    if (res.status === 200 || res.status === 201) {
+      setIsLoadingSave(false);
+      const data = res.data?.data || res.data;
+
+      // Chuyển hướng sang trang thanh toán nếu có paymentUrl
+      if (data?.paymentUrl) {
+        window.location.href = data.paymentUrl;
+      } else {
+        // fallback
+        confirm({
+          title: "Đăng tin thành công",
+          description: "Không có đường dẫn thanh toán. Vui lòng kiểm tra lại.",
+        });
       }
-    };
+    }
+  } catch (err) {
+    // Nếu người dùng bấm Hủy thì sẽ bị catch ở đây
+    setIsLoadingSave(false);
+  }
+};
 
     const updatePost = async () => {
       try {
@@ -908,16 +931,3 @@ const CardNewPost = ({ type, jobPostId }) => {
   );
 };
 export default CardNewPost;
-
-
-// import React from "react";
-
-// const CardNewPost = () => {
-//   return (
-//     <div>
-//       <h1>Card New Post</h1>
-//       {/* Add your card content here */}
-//     </div>
-//   );
-// }
-// export default CardNewPost;
