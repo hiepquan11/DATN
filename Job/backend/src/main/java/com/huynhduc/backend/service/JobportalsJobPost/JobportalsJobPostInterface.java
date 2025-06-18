@@ -21,5 +21,8 @@ public interface JobportalsJobPostInterface {
 
     List<JobportalsJobpost> getJobPostsByRecruiterId(int id);
 
+    Page<JobportalsJobpost> getSemanticFilteredJobPosts(String keyword, Pageable pageable);
+
+
     void deleteJobPost(int id);
 }

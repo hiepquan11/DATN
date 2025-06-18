@@ -57,10 +57,10 @@ export const endpoints = {
   "user-save-job-posts": (userId) => `/users/${userId}/save-job-posts/`,
   "user-save-job-post": (userId) => `/users/${userId}/save-job-post/`,
   "user-save-job-posted": (userId) => `/users/${userId}/save-job-posted/`,
-  "user-applied-job-posts": (userId) => `/users/${userId}/job-posts-activity/`,
-  "applied-to-recruiter": `/apply-job/`,
+  "user-applied-job-posts": (userId) => `/users/${userId}/job-posts-activity`,
+  "applied-to-recruiter": `/apply-job`,
   "reply-to-seeker": `/reply-seeker/`,
-  "user-apply-job-post": (userId) => `/users/${userId}/job-post-activity/`,
+  "user-apply-job-post": (userId) => `/users/${userId}/job-post-activity`,
   "save-job-posts": (saveJobPostId) => `/save-job-posts/${saveJobPostId}/`,
   "job-posts-activity": (jobPostActivityId) =>
     `/job-posts-activity/${jobPostActivityId}/`,

@@ -50,6 +50,7 @@ public class Endpoint {
             "/careers/**",
             "/users/{userId}/company",
             "/users/{id}/job-post",
+            "/users/vnpay/payment-return",
             "/users/{userId}/job-posts",
             "/users/{userId}/job-posted",
             "/companies/{companyId}/view",

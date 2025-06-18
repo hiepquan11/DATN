@@ -1,6 +1,7 @@
 package com.huynhduc.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -101,6 +102,7 @@ public class JobportalsJobpost {
 
     @ManyToOne
     @JoinColumn(name = "recruiter_id")
+    @JsonIgnoreProperties({"password", "roles", "company", "listJobSeekerProfiles"})
     private JobportalsUser recruiter;
 
     @ManyToOne

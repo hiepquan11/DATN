@@ -198,15 +198,13 @@ const PostDetail = () => {
           { job_post_id: jobPostDetail.id }
         );
 
-        console.log("toi goi ne ", res);
-
         if (res.status === 201) {
           // thong bao ung tuyen thanh cong
           handleAppliedSucces();
           setApplied({
             ...applied,
             isApplied: true,
-            applyJobPostId: res.data.id,
+            applyJobPostId: res.data.data.id,
           });
         }
       } catch (err) {

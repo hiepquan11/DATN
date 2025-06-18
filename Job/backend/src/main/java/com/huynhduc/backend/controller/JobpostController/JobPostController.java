@@ -131,36 +131,21 @@ public class JobPostController {
             @RequestParam(defaultValue = "10") int page_size
     ) {
         try {
+            int MAX_PAGE_SIZE = 100;
+            if (page_size > MAX_PAGE_SIZE) {
+                page_size = MAX_PAGE_SIZE;
+            }
+
             Pageable pageable = PageRequest.of(page, page_size);
             Map<String, String> filters = new HashMap<>();
 
-            if (kw != null && !kw.isBlank()) {
-                filters.put("keyword", kw);
-            }
-
-            if (city_id != null && !city_id.isBlank()) {
-                filters.put("city", city_id);
-            }
-
-            if (working_form_id != null && !working_form_id.isBlank()) {
-                filters.put("working_form", working_form_id);
-            }
-
-            if (position_id != null && !position_id.isBlank()) {
-                filters.put("position", position_id);
-            }
-
-            if (experience_id != null && !experience_id.isBlank()) {
-                filters.put("experience", experience_id);
-            }
-
-            if (salary_id != null && !salary_id.isBlank()) {
-                filters.put("salary", salary_id);
-            }
-
-            if (career_id != null && !career_id.isBlank()) {
-                filters.put("career", career_id);
-            }
+            if (kw != null && !kw.isBlank()) filters.put("keyword", kw);
+            if (city_id != null && !city_id.isBlank()) filters.put("city", city_id);
+            if (working_form_id != null && !working_form_id.isBlank()) filters.put("working_form", working_form_id);
+            if (position_id != null && !position_id.isBlank()) filters.put("position", position_id);
+            if (experience_id != null && !experience_id.isBlank()) filters.put("experience", experience_id);
+            if (salary_id != null && !salary_id.isBlank()) filters.put("salary", salary_id);
+            if (career_id != null && !career_id.isBlank()) filters.put("career", career_id);
 
             Page<JobportalsJobpost> result = jobPostService.getJobPostsWithFilters(filters, pageable);
 

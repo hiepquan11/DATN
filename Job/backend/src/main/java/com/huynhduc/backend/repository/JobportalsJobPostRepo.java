@@ -2,12 +2,15 @@ package com.huynhduc.backend.repository;
 
 import com.huynhduc.backend.entity.JobportalsJobpost;
 import com.huynhduc.backend.entity.JobportalsUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
+import java.util.Map;
 
 @RepositoryRestResource(path = "job-post")
 public interface JobportalsJobPostRepo extends JpaRepository<JobportalsJobpost, Integer>,
@@ -17,4 +20,6 @@ public interface JobportalsJobPostRepo extends JpaRepository<JobportalsJobpost, 
     List<JobportalsJobpost> findByRecruiterIdOrderByCreatedDate(int recruiterId);
 
     JobportalsJobpost findById(int id);
+
+    Page<JobportalsJobpost> findByIdIn(List<Integer> ids, Pageable pageable);
 }

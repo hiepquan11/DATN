@@ -50,6 +50,7 @@ const CardAppliedJob = () => {
     const loadAppliedJobPosts = async () => {
       setIsLoadingApplyJobPosts(true);
 
+      console.log("user", user.id);
       try {
         const res = await authApi().get(
           endpoints["user-applied-job-posts"](user.id)
@@ -57,15 +58,15 @@ const CardAppliedJob = () => {
 
         if (res.status === 200) {
           let datas = [];
-          res.data.forEach((d) => {
+          res.data.data.forEach((d) => {
             datas.push({
               id: d.id,
-              job_post_id: d.job_post.id,
-              job_name: d.job_post ? d.job_post.job_name : "Không có dữ liệu",
-              company_name: d.job_post.recruiter.company.company_name,
-              city: d.job_post.city.city_name,
-              salary: d.job_post.salary.salary_name,
-              deadline: d.job_post.deadline,
+              job_post_id: d.jobPost.id,
+              job_name: d.jobPost ? d.jobPost.job_name : "Không có dữ liệu",
+              company_name: d.jobPost.recruiter.company.company_name,
+              city: d.jobPost.city.city_name,
+              salary: d.jobPost.salary.salary_name,
+              deadline: d.jobPost.deadline,
               applied_date: d.apply_date,
               status: d.status,
             });
