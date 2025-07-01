@@ -56,6 +56,7 @@ import { DialogProvider } from "react-mui-dialog";
 import RequestSeekerProfile from "./pages/RequestSeekerProfile";
 import RequestRecruiterCompany from "./pages/RequestRecruiterCompany";
 import Demo from "./demo/Demo";
+import CardBuyPackage from "./components/dashboard/recruiter/CardBuyPackage";
 
 
 const App = () => {
@@ -205,12 +206,14 @@ const App = () => {
                     path="general-management/"
                     element={<RecruiterManage />}
                   />
+                  <Route path="buy-package/" element={<CardBuyPackage />} />
                   <Route path="new-post/" element={<NewPost />} />
                   <Route path="posted/" element={<Posted />} />
                   <Route
                     path="job-post-activity/"
                     element={<JobPostActivity />}
                   />
+
                   <Route path="company-profile/" element={<CompnanyInfo />} />
                   <Route path="company-images/" element={<CompnanyImage />} />
                   <Route path="account/" element={<Account />} />

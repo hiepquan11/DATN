@@ -215,6 +215,20 @@ const RecruiterList = () => {
             </ListItemIcon>
             <ListItemText primary="Tin đã đăng" />
           </ListItemButton>
+
+          <ListItemButton
+            sx={{ pl: 4 }}
+            component={Link}
+            to={"buy-package/"}
+            selected={location.pathname === "/recruiter/buy-package/"}
+          >
+            <ListItemIcon>
+              <AssignmentIndIcon />
+            </ListItemIcon>
+            <ListItemText primary="Mua gói dịch vụ" />
+          </ListItemButton>
+
+
         </List>
       </Collapse>
       <ListItemButton component={Link} to={"/job-seeker-profiles/"}>

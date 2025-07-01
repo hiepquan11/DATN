@@ -51,6 +51,8 @@ const FormSendMailToAppliedSeeker = ({
     formData.append("user_id", user.id);
     formData.append("job_posts_activity_id", selectJobPostsActivityId);
 
+    console.log("formData", formData);
+
     const sendMailToSeekers = async () => {
       setIsLoadingSendMail(true);
 

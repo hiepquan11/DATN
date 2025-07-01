@@ -18,7 +18,7 @@ export const endpoints = {
     `/job-posts/${jobPostId}/applied-job-post`,
   "job-seeker-profiles": "/job-seeker-profiles/",
   "job-seeker-profile-detail": (jobSeekerProfileId) =>
-    `/job-seeker-profiles/${jobSeekerProfileId}/`,
+    `/job-seeker-profiles/${jobSeekerProfileId}`,
   "job-seeker-profile-view": (jobSeekerProfileId) =>
     `/job-seeker-profiles/${jobSeekerProfileId}/view/`,
   "job-seeker-profile-cv": (jobSeekerProfileId) =>
@@ -30,7 +30,7 @@ export const endpoints = {
     `/job-seeker-profiles/${jobSeekerProfileId}/desired-job`,
   companies: "/companies/",
   "education-detail": (jobSeekerProfileId) =>
-    `/job-seeker-profiles/${jobSeekerProfileId}/education-detail/`,
+    `/job-seeker-profiles/${jobSeekerProfileId}/education-detail`,
   "experience-detail": (jobSeekerProfileId) =>
     `/job-seeker-profiles/${jobSeekerProfileId}/experience_details/`,
   "update-experience-detail": (experienceDetailId) =>
@@ -59,11 +59,14 @@ export const endpoints = {
   "user-save-job-posted": (userId) => `/users/${userId}/save-job-posted/`,
   "user-applied-job-posts": (userId) => `/users/${userId}/job-posts-activity`,
   "applied-to-recruiter": `/apply-job`,
-  "reply-to-seeker": `/reply-seeker/`,
+  "reply-to-seeker": `/reply-seeker`,
   "user-apply-job-post": (userId) => `/users/${userId}/job-post-activity`,
   "save-job-posts": (saveJobPostId) => `/save-job-posts/${saveJobPostId}/`,
   "job-posts-activity": (jobPostActivityId) =>
     `/job-posts-activity/${jobPostActivityId}/`,
+  "job-post-packages": "/package",
+  "purchase-package": "/user-package/purchase",
+  "active-user-package": "/user-package/active",
   // update
   "job-post-activity": (jobPostActivityId) =>
     `/job-posts-activity/${jobPostActivityId}/`,
@@ -76,7 +79,9 @@ export const endpoints = {
 
 export default axios.create({
   // baseURL: "https://bkhuy.pythonanywhere.com/",
-  baseURL: "http://localhost:8080/",
+  // baseURL: "http://localhost:8080/",
+  baseURL: "http://14.225.212.28:8080/",
+
 });
 
 export const authApi = (isFormData = false) => {

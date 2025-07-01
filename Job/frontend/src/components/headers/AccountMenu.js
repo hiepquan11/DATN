@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
@@ -25,6 +25,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import cookie from "react-cookies";
 import { logoutUser } from "../../store/actions/UserCreator";
+import { authApi, endpoints } from "../../configs/Api";
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -32,6 +33,8 @@ export default function AccountMenu() {
   const user = useSelector((state) => state.user);
   const nav = useNavigate();
   const dispatch = useDispatch();
+  const [quota, setQuota] = useState(null);
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -39,6 +42,23 @@ export default function AccountMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+  const fetchQuota = async () => {
+    if (user && checkPermission(user, UserRole.RECRUITER)) {
+      try {
+        const res = await authApi().get(endpoints["active-user-package"], {
+          params: { userId: user.id },
+        });
+        setQuota(res.data.postQuotaRemaining);
+      } catch (err) {
+        console.error("Không thể lấy thông tin gói:", err);
+      }
+    }
+  };
+  fetchQuota();
+}, [user]);
+
 
   const handleLogout = () => {
     
@@ -108,6 +128,14 @@ export default function AccountMenu() {
       icon: <AppsIcon fontSize="small" />,
       onClick: () => nav("/recruiter/general-management/"),
     },
+
+    {
+      key: "quota",
+      label: `Số lượt đăng còn lại: ${quota ?? "..."}`,
+      icon: <FactCheckIcon fontSize="small" />,
+      onClick: () => {}, // hoặc để trống
+    },
+    
     {
       key: "post-new-job",
       label: "Đăng tin tuyển dụng",

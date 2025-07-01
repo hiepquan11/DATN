@@ -21,8 +21,10 @@ const CvView = () => {
           endpoints["job-seeker-profile-cv"](jobSeekerProfileId)
         );
 
-        if (res.status === 200 && res.data["id"] !== undefined) {
-          setUrl(res.data.url_cv);
+        console.log(res);
+
+        if (res.status === 200) {
+          setUrl(res.data.data[0].cvUrl);
         }
       } catch (err) {
         console.error(err);
@@ -31,6 +33,8 @@ const CvView = () => {
 
     loadCv();
   }, [jobSeekerProfileId]);
+
+  console.log("URL CV:", url);
 
   // Create new plugin instance
   const defaultLayoutPluginInstance = defaultLayoutPlugin();

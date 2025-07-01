@@ -104,7 +104,7 @@ const SeekerProfileDetail = () => {
                 >
                   <Box>
                     <Avatar
-                      src={jobSeekerProfileDetail.job_seeker.avatar}
+                      src={jobSeekerProfileDetail.job_seeker?.avatar}
                       sx={{ width: 100, height: 100, margin: "0 auto" }}
                     />
                   </Box>
@@ -141,7 +141,7 @@ const SeekerProfileDetail = () => {
                       >
                         {jobSeekerProfileDetail.desired_job === null
                           ? "Chưa cập nhật"
-                          : jobSeekerProfileDetail.desired_job.job_name}
+                          : jobSeekerProfileDetail.desired_job?.job_name}
                       </Typography>
                       <Typography
                         sx={{
@@ -225,7 +225,7 @@ const SeekerProfileDetail = () => {
                         Email
                       </Typography>
                       <Typography variant="body1" gutterBottom>
-                        {jobSeekerProfileDetail.job_seeker.email}
+                        {jobSeekerProfileDetail.job_seeker?.email}
                       </Typography>
                       <Typography variant="body1" sx={{ fontWeight: "bold" }}>
                         Số điện thoại
@@ -267,7 +267,7 @@ const SeekerProfileDetail = () => {
                         Tỉnh/Thành phố
                       </Typography>
                       <Typography variant="body1" gutterBottom>
-                        {jobSeekerProfileDetail.city.city_name}
+                        {jobSeekerProfileDetail.desired_job?.city.city_name}
                       </Typography>
                       <Typography variant="body1" sx={{ fontWeight: "bold" }}>
                         Địa chỉ
@@ -395,8 +395,8 @@ const SeekerProfileDetail = () => {
                     </Typography>
                   ) : (
                     <CardSimilarJobSeekerProfile
-                      careerId={jobSeekerProfileDetail.desired_job.career.id}
-                      cityId={jobSeekerProfileDetail.desired_job.city.id}
+                      careerId={jobSeekerProfileDetail.desired_job?.career.id}
+                      cityId={jobSeekerProfileDetail.desired_job?.city.id}
                     />
                   )}
                 </Box>

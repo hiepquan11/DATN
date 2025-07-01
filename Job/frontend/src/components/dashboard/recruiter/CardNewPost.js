@@ -45,6 +45,11 @@ const CardNewPost = ({ type, jobPostId }) => {
     benefitsEnjoyed: "",
     requestProfile: "",
   });
+  const DISPLAY_PRICES = {
+  NORMAL: 20000,
+  HOT: 35000,
+  VIP: 50000,
+};
 
   const validationSchema = Yup.object().shape({
     jobName: Yup.string()
@@ -214,24 +219,27 @@ const CardNewPost = ({ type, jobPostId }) => {
 
     console.log("CardNewPost: render");
     const addNewPost = async () => {
-  try {
-    const now = new Date();
-    const deadline = new Date(formData.get("deadline")); // Lấy từ formData
-    const days = Math.max(differenceInCalendarDays(deadline, now), 1);
-    const pricePerDay = 20000;
-    const totalCost = days * pricePerDay;
+      try {
+        const displayType = data.displayType || "NORMAL";
+        const now = new Date();
+        const deadline = new Date(formData.get("deadline")); // Lấy từ formData
+        const days = Math.max(differenceInCalendarDays(deadline, now), 1);
+        const pricePerDay = 20000;
+        const totalCost = days * pricePerDay;
 
-    await confirm({
-      title: "Xác nhận trước khi đăng tin",
-      description: `
-        Bài đăng sẽ hiển thị trong ${days} ngày.\n
-        Đơn giá mỗi ngày: ${pricePerDay.toLocaleString()} VND.\n
-        Tổng chi phí: ${totalCost.toLocaleString()} VND.\n
-        Bạn có đồng ý thanh toán chi phí này qua VNPay?
-      `,
-      confirmationText: "Tôi đồng ý",
-      cancellationText: "Hủy",
-    });
+
+
+        await confirm({
+          title: "Xác nhận trước khi đăng tin",
+          description: `
+            Bài đăng sẽ hiển thị trong ${days} ngày.\n
+            Đơn giá mỗi ngày: ${pricePerDay.toLocaleString()} VND.\n
+            Tổng chi phí: ${totalCost.toLocaleString()} VND.\n
+            Bạn có đồng ý thanh toán chi phí này qua VNPay?
+          `,
+          confirmationText: "Tôi đồng ý",
+          cancellationText: "Hủy",
+        });
 
     // Người dùng đã xác nhận => gọi API tạo job post
     const res = await authApi().post(
@@ -895,6 +903,29 @@ const CardNewPost = ({ type, jobPostId }) => {
                 )}
               />
               <Typography variant="body1">Cần tuyển gấp</Typography>
+              <Grid item xs={12} md={12} sm={12}>
+                <Typography sx={{ fontWeight: "bold", color: "#0000ee" }}>
+                  | Lựa chọn cấp độ hiển thị
+                </Typography>
+                <Controller
+                  name="displayType"
+                  control={control}
+                  defaultValue="NORMAL"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      select
+                      fullWidth
+                      size="small"
+                      label="Chọn cấp độ hiển thị bài đăng"
+                    >
+                      <MenuItem value="NORMAL">Thường (20.000đ/ngày)</MenuItem>
+                      <MenuItem value="HOT">Nổi bật (35.000đ/ngày)</MenuItem>
+                      <MenuItem value="VIP">VIP (50.000đ/ngày)</MenuItem>
+                    </TextField>
+                  )}
+                />
+              </Grid>
             </Stack>
           </Grid>
 
